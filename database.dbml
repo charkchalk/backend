@@ -1,0 +1,108 @@
+Project Charkchalk {
+    database_type: 'PostgreSQL'
+    Note: '''
+        # Charkchalk Database
+    '''
+}
+
+Table branches {
+    id int [pk, increment]
+    Note: '''
+    ## 分支
+    ### 概述
+
+    分支代表著在不同時間，但內容相同課程的總和。所有分支的課程名稱應該要相同，故分支名稱會直接取底下的課程名稱做使用。
+    預想上分支在沒有指定所屬分支的課程創建時會被建立。
+
+    例如：
+    
+    1. 108 學年度上學期 計算機概論
+    2. 109 學年度上學期 計算機概論
+    3. 110 學年度上學期 計算機概論
+
+    都應該要算在同一個課程分支中。
+    '''
+}
+
+Table courses {
+    id int [pk, increment]
+    code varchar(255) [note: "選課代號（如果適用）"]
+    in_branch int [ref: > branches.id, not null, note: "所屬的分支"]
+    predecessor int [ref: > courses.id, note: "課程前身（例如某年計算機概論因教授覺得學生不行，突然分成了兩門課。其一為資訊入門、其二為專業英文導讀，則此二者的前身都會是計算機概論）"]
+
+    name varchar(255) [not null, note: "課程名稱"]
+    organization varchar(255) [not null, note: "所屬組織（通常是學校，如靜宜大學等）"]
+    description varchar(255) [note: "課程敘述"]
+    credits int [note: "學分數"]
+    tages int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
+    places int [not null, ref: > places.id, note: "上課地點"]
+    date_range int [not null, ref: > date_ranges.id, note: "開課日期範圍"]
+    time_range int [ref: <> time_ranges.id, note: "每週上課時間"]
+    host int [ref: <> persons.id, note: "講師、負責人"]
+}
+
+Table tags {
+    id int [pk, increment]
+    name varchar(255) [not null, note: "屬性名稱"]
+    description varchar(255) [note: "屬性敘述"]
+    limit varchar(255) [note: "屬性限制（該屬性僅能套用在課程 or 組合上）"]
+}
+
+Table places {
+    id int [pk, increment]
+    name varchar(255) [not null, note: "地點名稱"]
+    description varchar(255) [note: "地點敘述"]
+    parent int [ref: < places.child, note: "父地點（例如主顧樓 509 > 主顧樓 > 靜宜大學）"]
+    child int
+}
+
+Table date_ranges {
+    id int [pk, increment]
+    name varchar(255) [not null, note:"範圍名稱（可能是靜宜大學 110 學年度上學期）"]
+    description varchar(255) [note: "範圍敘述"]
+    start_date date [not null, note:"範圍開始日期"]
+    end_date date [not null, note:"範圍結束日期"]
+
+    note: "開課的日期範圍"
+}
+
+Table time_ranges {
+    id int [pk, increment]
+    day week [not null, note: "星期幾"]
+    start_time time [not null, note: "開始時間"]
+    end_time time [not null, note: "結束時間"]
+
+    note: "每週的幾點到幾點"
+}
+
+Table persons {
+    id int [pk, increment]
+    name varchar(255) [not null]
+    description varchar(255) [not null]
+    link varchar(255) [not null, note: "通常為教師的個人網站"]
+}
+
+Table combinations {
+    id int [pk, increment]
+    name varchar(255) [not null, note: "組合名稱"]
+    organization varchar(255) [not null, note: "所屬組織（通常是學校，如靜宜大學等）"]
+    description varchar(255) [not null, note: "組合敘述"]
+    tags int [ref: <> tags.id, note: "組合屬性（如系所開的課、學程等）"]
+    courses int [ref: <> courses.id, note: "課程們"]
+
+    note: '''
+    ## 組合
+    ### 概述
+    代表一組課程的組合，例如資工系課程、或是雲端應用學程等
+    '''
+}
+
+enum week {
+    sunday
+    monday
+    tuesday
+    wednesday
+    thursday
+    friday
+    saturday
+}
