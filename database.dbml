@@ -31,10 +31,10 @@ Table courses {
     predecessor int [ref: > courses.id, note: "課程前身（例如某年計算機概論因教授覺得學生不行，突然分成了兩門課。其一為資訊入門、其二為專業英文導讀，則此二者的前身都會是計算機概論）"]
 
     name varchar(255) [not null, note: "課程名稱"]
-    organization varchar(255) [not null, note: "所屬組織（通常是學校，如靜宜大學等）"]
+    organization int [not null, ref: > organizations.id, note: "所屬組織（通常是學校，如靜宜大學等）"]
     description varchar(255) [note: "課程敘述"]
     credits int [note: "學分數"]
-    tages int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
+    tags int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
     places int [not null, ref: > places.id, note: "上課地點"]
     date_range int [not null, ref: > date_ranges.id, note: "開課日期範圍"]
     time_range int [ref: <> time_ranges.id, note: "每週上課時間"]
@@ -93,7 +93,7 @@ Table persons {
 Table combinations {
     id int [pk, increment]
     name varchar(255) [not null, note: "組合名稱"]
-    organization varchar(255) [not null, note: "所屬組織（通常是學校，如靜宜大學等）"]
+    organization int [not null, ref: > organizations.id, note: "所屬組織（通常是學校，如靜宜大學等）"]
     description varchar(255) [not null, note: "組合敘述"]
     tags int [ref: <> tags.id, note: "組合屬性（如系所開的課、學程等）"]
     courses int [ref: <> courses.id, note: "課程們"]
@@ -104,6 +104,13 @@ Table combinations {
     代表一組課程的組合，例如資工系課程、或是雲端應用學程等
 
     '''
+}
+
+Table organizations {
+    id int [pk, increment]
+    name varchar(255) [not null, note: "組織名稱（通常是校名）"]
+    description varchar(255) [not null, note: "組織敘述（通常會給學校首頁或 wiki 資訊）"]
+    tags int [ref: <> tags.id, note: "組織屬性（例如學校、政府計畫等）"]
 }
 
 enum week {
