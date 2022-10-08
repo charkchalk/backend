@@ -39,6 +39,8 @@ Table courses {
     date_range int [not null, ref: > date_ranges.id, note: "開課日期範圍"]
     time_range int [ref: <> time_ranges.id, note: "每週上課時間"]
     host int [ref: <> persons.id, note: "講師、負責人"]
+
+    note: "課程"
 }
 
 Table tags {
@@ -46,6 +48,8 @@ Table tags {
     name varchar(255) [not null, note: "屬性名稱"]
     description varchar(255) [note: "屬性敘述"]
     limit varchar(255) [note: "屬性限制（該屬性僅能套用在課程 or 組合上）"]
+
+    note: "屬性"
 }
 
 Table places {
@@ -54,6 +58,8 @@ Table places {
     description varchar(255) [note: "地點敘述"]
     parent int [ref: < places.child, note: "父地點（例如主顧樓 509 > 主顧樓 > 靜宜大學）"]
     child int
+
+    note: "地點"
 }
 
 Table date_ranges {
@@ -80,6 +86,8 @@ Table persons {
     name varchar(255) [not null]
     description varchar(255) [not null]
     link varchar(255) [not null, note: "通常為教師的個人網站"]
+
+    note: "人物"
 }
 
 Table combinations {
@@ -94,6 +102,7 @@ Table combinations {
     ## 組合
     ### 概述
     代表一組課程的組合，例如資工系課程、或是雲端應用學程等
+
     '''
 }
 
