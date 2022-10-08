@@ -47,7 +47,7 @@ Table tags {
     id int [pk, increment]
     name varchar(255) [not null, note: "屬性名稱"]
     description varchar(255) [note: "屬性敘述"]
-    limit varchar(255) [note: "屬性限制（該屬性僅能套用在課程 or 組合上）"]
+    limit tag_limit [note: "屬性限制（該屬性僅能套用在課程 or 組合上）"]
 
     note: "屬性"
 }
@@ -121,4 +121,10 @@ enum week {
     thursday
     friday
     saturday
+}
+
+enum tag_limit {
+    courses
+    combinations
+    organizations
 }
