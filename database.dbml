@@ -33,10 +33,11 @@ Table courses {
     name varchar(255) [not null, note: "課程名稱"]
     organization int [not null, ref: > organizations.id, note: "所屬組織（通常是學校，如靜宜大學等）"]
     description varchar(255) [note: "課程敘述"]
+    link varchar(255) [not null, note: "課程連結（通常是課程網頁）"]
     credits int [note: "學分數"]
     tags int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
     places int [not null, ref: > places.id, note: "上課地點"]
-    date_range int [not null, ref: > date_ranges.id, note: "開課日期範圍"]
+    date_range int [ref: > date_ranges.id, note: "開課日期範圍"]
     time_range int [ref: <> time_ranges.id, note: "每週上課時間"]
     host int [ref: <> persons.id, note: "講師、負責人"]
 
@@ -55,7 +56,7 @@ Table tags {
 Table places {
     id int [pk, increment]
     name varchar(255) [not null, note: "地點名稱"]
-    description varchar(255) [note: "地點敘述"]
+    description varchar(255) [not null, note: "地點敘述"]
     parent int [ref: < places.child, note: "父地點（例如主顧樓 509 > 主顧樓 > 靜宜大學）"]
     child int
 
