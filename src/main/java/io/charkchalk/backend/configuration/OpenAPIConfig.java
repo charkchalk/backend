@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenAPIConfig {
     @Bean
-    public OpenAPI openAPIConfig() {
+    public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info().title("Charkchalk Backend API")
                         .description("Charkchalk Backend API implemented with Spring Boot RESTful service and documented using springdoc-openapi and OpenAPI 3.")
