@@ -15,14 +15,17 @@ public class OpenAPIConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info().title("Charkchalk Backend API")
-                        .description("Charkchalk Backend API implemented with Spring Boot RESTful service and documented using springdoc-openapi and OpenAPI 3.")
+                        .description("Charkchalk Backend API implemented with Spring Boot RESTful service " +
+                                "and documented using springdoc-openapi and OpenAPI 3.")
                         .version("v0.0.1")
-                        .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0.txt")))
+                        .license(new License().name("Apache 2.0")
+                                .url("https://www.apache.org/licenses/LICENSE-2.0.txt")))
                 .externalDocs(new ExternalDocumentation()
                         .description("Charkchalk Database Documentation")
                         .url("https://dbdocs.io/YukinaMochizuki/Charkchalk"))
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",
-                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }

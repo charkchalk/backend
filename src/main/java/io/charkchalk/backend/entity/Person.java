@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "persons")
@@ -20,7 +21,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private UUID id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -28,7 +29,7 @@ public class Person {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "link", nullable = false)
+    @Column(name = "link")
     private URL link;
 
     @ManyToMany(mappedBy = "hosts")

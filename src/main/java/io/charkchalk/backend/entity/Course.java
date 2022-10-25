@@ -1,5 +1,7 @@
 package io.charkchalk.backend.entity;
 
+import io.charkchalk.backend.entity.range.DateRange;
+import io.charkchalk.backend.entity.range.TimeRange;
 import lombok.*;
 import javax.persistence.*;
 import java.net.URL;
@@ -23,7 +25,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "on_branch_id", nullable = false)
-    private Branch on_branch;
+    private Branch onBranch;
 
     @ManyToOne
     @JoinColumn(name = "predecessor_id")
@@ -60,9 +62,12 @@ public class Course {
     @JoinColumn(name = "date_id")
     private DateRange dateRange;
 
-    @ManyToOne
-    @JoinColumn(name = "time_id")
-    private TimeRange timeRange;
+    @ManyToMany
+    @JoinTable(name = "courses_time_ranges",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "time_ranges_id"))
+    @ToString.Exclude
+    private Collection<TimeRange> timeRanges = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "courses_persons",
@@ -71,8 +76,7 @@ public class Course {
     @ToString.Exclude
     private Collection<Person> hosts = new ArrayList<>();
 
-    // OneToMany
-    @OneToMany(mappedBy = "predecessor", orphanRemoval = true)
+    @OneToMany(mappedBy = "predecessor")
     @ToString.Exclude
     private Collection<Course> child = new ArrayList<>();
 }
