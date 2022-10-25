@@ -23,7 +23,7 @@ public class DateRange {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "start_date", nullable = false)
