@@ -8,6 +8,8 @@ import org.springframework.shell.standard.ShellComponent;
 @ShellComponent
 public class BackendApplication {
 
+    private BackendApplication() {}
+
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
