@@ -1,5 +1,6 @@
-package io.charkchalk.backend.entity;
+package io.charkchalk.backend.entity.range;
 
+import io.charkchalk.backend.entity.Course;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,13 +23,15 @@ public class DateRange {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name", unique = true)
+    private String name;
+
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    // OneToMany
     @OneToMany(mappedBy = "dateRange")
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();

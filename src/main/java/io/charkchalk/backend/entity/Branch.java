@@ -17,8 +17,7 @@ public class Branch {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    // OneToMany
-    @OneToMany(mappedBy = "on_branch", orphanRemoval = true)
+    @OneToMany(mappedBy = "onBranch")
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
 }

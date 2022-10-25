@@ -1,5 +1,6 @@
-package io.charkchalk.backend.entity;
+package io.charkchalk.backend.entity.range;
 
+import io.charkchalk.backend.entity.Course;
 import io.charkchalk.backend.entity.enums.Week;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.TimeZone;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "time_range")
@@ -23,7 +26,7 @@ public class TimeRange {
     private Long id;
 
     @Column(name = "timezone", nullable = false)
-    private TimeZone timeZone;
+    private ZoneId timeZone;
 
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
@@ -34,4 +37,8 @@ public class TimeRange {
     @Enumerated
     @Column(name = "week")
     private Week week;
+
+    @ManyToMany(mappedBy = "timeRanges")
+    @ToString.Exclude
+    private Collection<Course> courses = new ArrayList<>();
 }

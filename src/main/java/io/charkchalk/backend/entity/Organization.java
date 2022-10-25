@@ -21,7 +21,7 @@ public class Organization {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", nullable = false)
@@ -34,7 +34,6 @@ public class Organization {
     @ToString.Exclude
     private Collection<Tag> tags = new ArrayList<>();
 
-    // OneToMany
     @OneToMany(mappedBy = "organization", orphanRemoval = true)
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
