@@ -25,7 +25,7 @@ public class TagConverter {
 
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-        if(tagRepository.existsByName(baseTagJson.getName())){
+        if (tagRepository.existsByName(baseTagJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", baseTagJson.getName()));
         }
 
