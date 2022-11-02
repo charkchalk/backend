@@ -7,11 +7,14 @@ import io.charkchalk.backend.json.tag.TagJson;
 import io.charkchalk.backend.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
+@Validated
 @RestController
 public class TagController {
 
@@ -22,7 +25,7 @@ public class TagController {
     private TagRepository tagRepository;
 
     @PostMapping("/api/tag")
-    public ResponseEntity<TagJson> createTag(@RequestBody @NotNull BaseTagJson baseTagJson) {
+    public ResponseEntity<TagJson> createTag(@Valid @RequestBody BaseTagJson baseTagJson) {
         Tag tag = tagConverter.convertToEntity(baseTagJson);
         tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
@@ -36,7 +39,7 @@ public class TagController {
     }
 
     @PutMapping("/api/tag")
-    public ResponseEntity<TagJson> putTag(@RequestBody @NotNull TagJson tagJson) {
+    public ResponseEntity<TagJson> putTag(@Valid @RequestBody TagJson tagJson) {
         Optional<Tag> tagOptional = tagRepository.findById(tagJson.getId());
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
