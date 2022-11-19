@@ -24,4 +24,9 @@ public class FieldNotValidItem {
         String message = String.format("Entity %s with %s %s already exists", entity, fieldName, id);
         return new FieldNotValidItem(fieldName, FieldNotValidType.EntityAlreadyExists, message);
     }
+
+    public static FieldNotValidItem sortPropertyNotFound(String property, String entity) {
+        String message = String.format("No property %s found in entity %s", property, entity);
+        return new FieldNotValidItem("sort", FieldNotValidType.SortPropertyNotFound, message);
+    }
 }
