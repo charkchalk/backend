@@ -1,11 +1,13 @@
 package io.charkchalk.backend.service.tag;
 
 import io.charkchalk.backend.entity.Tag;
+import io.charkchalk.backend.json.PageJson;
 import io.charkchalk.backend.json.tag.BaseTagJson;
 import io.charkchalk.backend.json.tag.TagConverter;
 import io.charkchalk.backend.json.tag.TagJson;
 import io.charkchalk.backend.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,28 +33,34 @@ public class TagController {
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
 
-    @GetMapping("/api/tag/{name}")
-    public ResponseEntity<TagJson> getTag(@PathVariable @NotNull String name) {
-        Optional<Tag> tagOptional = tagRepository.findByName(name);
+    @GetMapping("/api/tag")
+    public ResponseEntity<PageJson<TagJson>> listTags(Pageable pageable) {
+        TagConverter.checkPageable(pageable);
+        return ResponseEntity.ok(tagConverter.convertToJsonPage(tagRepository.findAll(pageable)));
+    }
+
+    @GetMapping("/api/tag/{id}")
+    public ResponseEntity<TagJson> getTag(@PathVariable @NotNull Long id) {
+        Optional<Tag> tagOptional = tagRepository.findById(id);
         return tagOptional.map(value -> ResponseEntity.ok(tagConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/tag")
-    public ResponseEntity<TagJson> putTag(@Valid @RequestBody TagJson tagJson) {
-        Optional<Tag> tagOptional = tagRepository.findById(tagJson.getId());
+    @PutMapping("/api/tag/{id}")
+    public ResponseEntity<TagJson> putTag(@PathVariable @NotNull Long id, @Valid @RequestBody BaseTagJson baseTagJson) {
+        Optional<Tag> tagOptional = tagRepository.findById(id);
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Tag tag = tagOptional.get();
-        tagConverter.updateEntity(tag, tagJson);
+        tagConverter.updateEntity(tag, baseTagJson);
         tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
 
-    @DeleteMapping("/api/tag/{name}")
-    public ResponseEntity<Void> deleteTag(@PathVariable @NotNull String name) {
-        Optional<Tag> tagOptional = tagRepository.findByName(name);
+    @DeleteMapping("/api/tag/{id}")
+    public ResponseEntity<Void> deleteTag(@PathVariable @NotNull Long id) {
+        Optional<Tag> tagOptional = tagRepository.findById(id);
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
