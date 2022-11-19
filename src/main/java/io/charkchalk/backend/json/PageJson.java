@@ -18,5 +18,5 @@ public class PageJson <T> {
     private int currentPage;
 
     @JsonProperty("content")
-    private List<T> content = new ArrayList<>();
+    private List<T> content = new ArrayList <>();
 }

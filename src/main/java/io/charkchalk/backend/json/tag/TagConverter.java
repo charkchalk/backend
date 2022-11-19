@@ -53,8 +53,8 @@ public class TagConverter {
         pageJson.setTotalPages(tags.getTotalPages());
         pageJson.setCurrentPage(tags.getNumber());
 
-        if(!tags.isEmpty()){
-            for(Tag tag : tags.getContent()) {
+        if (!tags.isEmpty()) {
+            for (Tag tag : tags.getContent()) {
                 pageJson.getContent().add(convertToJson(tag));
             }
         }
@@ -71,15 +71,15 @@ public class TagConverter {
     public static void checkPageable(Pageable pageable) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-        if(pageable.getSort().isSorted()) {
+        if (pageable.getSort().isSorted()) {
             Sort sort = pageable.getSort();
 
             Set<String> possibleProperty = new HashSet<>();
             possibleProperty.add("name");
             possibleProperty.add("tagLimit");
 
-            for(Sort.Order order: sort) {
-                if(!possibleProperty.contains(order.getProperty())) {
+            for (Sort.Order order: sort) {
+                if (!possibleProperty.contains(order.getProperty())) {
                     fieldNotValidItems.add(FieldNotValidItem.sortPropertyNotFound(order.getProperty(), "Tag"));
                 }
             }
