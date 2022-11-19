@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PageJson <T> {
+public class PageJson<T> {
 
     @JsonProperty("totalPages")
     private int totalPages;
@@ -18,5 +18,5 @@ public class PageJson <T> {
     private int currentPage;
 
     @JsonProperty("content")
-    private List <T> content = new ArrayList <>();
+    private List<T> content = new ArrayList<>();
 }
