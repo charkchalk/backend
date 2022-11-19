@@ -73,6 +73,6 @@ public class WebExceptionHandler {
         problem.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         problem.setDetail(e.getMessage());
 
-        return new ResponseEntity<>(problem, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(problem, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
