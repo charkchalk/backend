@@ -61,7 +61,8 @@ public class PlaceConverter {
         possibleProperty.add("name");
         possibleProperty.add("parent");
 
-        List<FieldNotValidItem> fieldNotValidItems = JsonConverter.checkPageableSortProperty(pageable, possibleProperty, "Place");
+        List<FieldNotValidItem> fieldNotValidItems =
+                JsonConverter.checkPageableSortProperty(pageable, possibleProperty, "Place");
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }
