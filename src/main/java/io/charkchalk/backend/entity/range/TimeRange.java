@@ -9,7 +9,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,9 +23,6 @@ public class TimeRange {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "timezone", nullable = false)
-    private ZoneId timeZone;
 
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
