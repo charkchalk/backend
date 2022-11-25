@@ -23,8 +23,17 @@ public class TimeRangeConverter {
 
     public TimeRange convertToEntity(BaseTimeRangeJson baseTimeRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if(timeRangeRepository.existsByStartTimeAndEndTimeAndWeek(baseTimeRangeJson.getStartTime(), baseTimeRangeJson.getEndTime(), baseTimeRangeJson.getWeek())) {
-            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("whole entity", "TimeRange", "startTime: " + baseTimeRangeJson.getStartTime() + ", endTime: " + baseTimeRangeJson.getEndTime() + ", week: " + baseTimeRangeJson.getWeek()));
+        if (timeRangeRepository.existsByStartTimeAndEndTimeAndWeek(
+                baseTimeRangeJson.getStartTime(),
+                baseTimeRangeJson.getEndTime(),
+                baseTimeRangeJson.getWeek())) {
+
+            fieldNotValidItems.add(FieldNotValidItem
+                    .entityAlreadyExists("whole entity",
+                            "TimeRange",
+                            "startTime: " + baseTimeRangeJson.getStartTime()
+                                    + ", endTime: " + baseTimeRangeJson.getEndTime()
+                                    + ", week: " + baseTimeRangeJson.getWeek()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
@@ -72,7 +81,8 @@ public class TimeRangeConverter {
         validSorts.add("endTime");
         validSorts.add("week");
 
-        List<FieldNotValidItem> fieldNotValidItems = JsonConverter.checkPageableSortProperty(pageable, validSorts, "TimeRange");
+        List<FieldNotValidItem> fieldNotValidItems =
+                JsonConverter.checkPageableSortProperty(pageable, validSorts, "TimeRange");
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }

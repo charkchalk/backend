@@ -24,7 +24,8 @@ public class DateRangeConverter {
     public DateRange convertToEntity(BaseDateRangeJson baseDateRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
         if(dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
-            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
+            fieldNotValidItems.add(FieldNotValidItem
+                    .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
@@ -71,7 +72,8 @@ public class DateRangeConverter {
         validSorts.add("startDate");
         validSorts.add("endDate");
 
-        List<FieldNotValidItem> fieldNotValidItems = JsonConverter.checkPageableSortProperty(pageable, validSorts, "DateRange");
+        List<FieldNotValidItem> fieldNotValidItems =
+                JsonConverter.checkPageableSortProperty(pageable, validSorts, "DateRange");
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }

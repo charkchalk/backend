@@ -45,7 +45,8 @@ public class DateController {
     }
 
     @PutMapping("/api/range/date/{id}")
-    public ResponseEntity<DateRangeJson> putDateRange(@PathVariable @NotNull Long id, @Valid @RequestBody BaseDateRangeJson baseDateRangeJson) {
+    public ResponseEntity<DateRangeJson> putDateRange(@PathVariable @NotNull Long id,
+                                                      @Valid @RequestBody BaseDateRangeJson baseDateRangeJson) {
         Optional<DateRange> dateRangeOptional = dateRangeRepository.findById(id);
         if (dateRangeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

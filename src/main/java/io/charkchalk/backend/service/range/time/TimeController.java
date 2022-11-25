@@ -47,7 +47,8 @@ public class TimeController {
     }
 
     @PutMapping("/api/range/time/{id}")
-    public ResponseEntity<TimeRangeJson> putTimeRange(@PathVariable @NotNull Long id, @Valid @RequestBody BaseTimeRangeJson baseTimeRangeJson) {
+    public ResponseEntity<TimeRangeJson> putTimeRange(@PathVariable @NotNull Long id,
+                                                      @Valid @RequestBody BaseTimeRangeJson baseTimeRangeJson) {
         Optional<TimeRange> timeRangeOptional = timeRangeRepository.findById(id);
         if (timeRangeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

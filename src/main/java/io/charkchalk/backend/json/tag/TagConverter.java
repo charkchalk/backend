@@ -71,7 +71,8 @@ public class TagConverter {
         possibleProperty.add("name");
         possibleProperty.add("tagLimit");
 
-        List<FieldNotValidItem> fieldNotValidItems = JsonConverter.checkPageableSortProperty(pageable, possibleProperty, "Tag");
+        List<FieldNotValidItem> fieldNotValidItems =
+                JsonConverter.checkPageableSortProperty(pageable, possibleProperty, "Tag");
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }
