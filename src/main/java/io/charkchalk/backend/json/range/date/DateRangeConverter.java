@@ -23,7 +23,7 @@ public class DateRangeConverter {
 
     public DateRange convertToEntity(BaseDateRangeJson baseDateRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if(dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
+        if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem
                     .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
         }
