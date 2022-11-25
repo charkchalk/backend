@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -69,21 +68,12 @@ public class TagConverter {
     }
 
     public static void checkPageable(Pageable pageable) {
-        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
+        Set<String> possibleProperty = new HashSet<>();
+        possibleProperty.add("name");
+        possibleProperty.add("tagLimit");
 
-        if (pageable.getSort().isSorted()) {
-            Sort sort = pageable.getSort();
-
-            Set<String> possibleProperty = new HashSet<>();
-            possibleProperty.add("name");
-            possibleProperty.add("tagLimit");
-
-            for (Sort.Order order: sort) {
-                if (!possibleProperty.contains(order.getProperty())) {
-                    fieldNotValidItems.add(FieldNotValidItem.sortPropertyNotFound(order.getProperty(), "Tag"));
-                }
-            }
-        }
+        List<FieldNotValidItem> fieldNotValidItems =
+                JsonConverter.checkPageableSortProperty(pageable, possibleProperty);
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }
