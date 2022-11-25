@@ -23,18 +23,17 @@ public class TagConverter {
     private TagRepository tagRepository;
 
     public Tag convertToEntity(@NotNull BaseTagJson baseTagJson) {
-        Tag tag = new Tag();
-        tag.setName(baseTagJson.getName());
-        tag.setDescription(baseTagJson.getDescription());
-        tag.setTagLimit(baseTagJson.getTagLimit());
-
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-
         if (tagRepository.existsByName(baseTagJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", baseTagJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
+
+        Tag tag = new Tag();
+        tag.setName(baseTagJson.getName());
+        tag.setDescription(baseTagJson.getDescription());
+        tag.setTagLimit(baseTagJson.getTagLimit());
         return tag;
     }
 
@@ -73,7 +72,7 @@ public class TagConverter {
         possibleProperty.add("tagLimit");
 
         List<FieldNotValidItem> fieldNotValidItems =
-                JsonConverter.checkPageableSortProperty(pageable, possibleProperty);
+                JsonConverter.checkPageableSortProperty(pageable, possibleProperty, "Tag");
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
     }

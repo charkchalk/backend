@@ -16,7 +16,8 @@ public class JsonConverter {
         }
     }
 
-    public static List<FieldNotValidItem> checkPageableSortProperty(Pageable pageable, Set<String> possibleProperties) {
+    public static List<FieldNotValidItem> checkPageableSortProperty(Pageable pageable, Set<String> possibleProperties,
+                                                                    String entityName) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
         if (pageable.getSort().isSorted()) {
@@ -24,7 +25,7 @@ public class JsonConverter {
 
             for (Sort.Order order: sort) {
                 if (!possibleProperties.contains(order.getProperty())) {
-                    fieldNotValidItems.add(FieldNotValidItem.sortPropertyNotFound(order.getProperty(), "Tag"));
+                    fieldNotValidItems.add(FieldNotValidItem.sortPropertyNotFound(order.getProperty(), entityName));
                 }
             }
         }
