@@ -3,7 +3,7 @@ name: Build database documentation
 on:
   push:
     paths:
-      - 'database.dbml'
+      - "database.dbml"
 
 jobs:
   build:
