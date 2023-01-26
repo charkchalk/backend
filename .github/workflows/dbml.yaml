@@ -2,12 +2,12 @@ name: Build database documentation
 
 on:
   push:
-  pull_request:
-    branches: [ main ]
+    paths:
+      - 'database.dbml'
 
 jobs:
   build:
-    name: build database documentation
+    name: database.dbml
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
