@@ -1,7 +1,7 @@
 Project Charkchalk {
     database_type: 'PostgreSQL'
     Note: '''
-        # Charkchalk Database
+        # Charkchalk Database Documentation
     '''
 }
 
