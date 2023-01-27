@@ -25,4 +25,6 @@ jobs:
         run: ./gradlew build
 
       - name: Test with JUnit
+        env:
+          spring_profiles_active: ci,dev
         run: ./gradlew test
