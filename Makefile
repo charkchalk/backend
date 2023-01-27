@@ -9,7 +9,7 @@ stop-dev-db:
 
 .PHONY: run
 run:
-	gradle bootRun
+	export spring_profiles_active=local,dev; gradle bootRun
 
 .PHONY: test
 test:
