@@ -1,5 +1,5 @@
 package io.charkchalk.backend.entity.enums;
 
-public enum Week {
+public enum Weekday {
     MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 }

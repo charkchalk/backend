@@ -26,14 +26,14 @@ public class TimeRangeConverter {
         if (timeRangeRepository.existsByStartTimeAndEndTimeAndWeek(
                 baseTimeRangeJson.getStartTime(),
                 baseTimeRangeJson.getEndTime(),
-                baseTimeRangeJson.getWeek())) {
+                baseTimeRangeJson.getWeekday())) {
 
             fieldNotValidItems.add(FieldNotValidItem
                     .entityAlreadyExists("whole entity",
                             "TimeRange",
                             "startTime: " + baseTimeRangeJson.getStartTime()
                                     + ", endTime: " + baseTimeRangeJson.getEndTime()
-                                    + ", week: " + baseTimeRangeJson.getWeek()));
+                                    + ", week: " + baseTimeRangeJson.getWeekday()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
@@ -41,7 +41,7 @@ public class TimeRangeConverter {
         TimeRange timeRange = new TimeRange();
         timeRange.setStartTime(baseTimeRangeJson.getStartTime());
         timeRange.setEndTime(baseTimeRangeJson.getEndTime());
-        timeRange.setWeek(baseTimeRangeJson.getWeek());
+        timeRange.setWeekday(baseTimeRangeJson.getWeekday());
         return timeRange;
     }
 
@@ -50,7 +50,7 @@ public class TimeRangeConverter {
         timeRangeJson.setId(timeRange.getId());
         timeRangeJson.setStartTime(timeRange.getStartTime());
         timeRangeJson.setEndTime(timeRange.getEndTime());
-        timeRangeJson.setWeek(timeRange.getWeek());
+        timeRangeJson.setWeekday(timeRange.getWeekday());
         return timeRangeJson;
     }
 
@@ -71,7 +71,7 @@ public class TimeRangeConverter {
     public void updateEntity(TimeRange timeRange, BaseTimeRangeJson baseTimeRangeJson) {
         timeRange.setStartTime(baseTimeRangeJson.getStartTime());
         timeRange.setEndTime(baseTimeRangeJson.getEndTime());
-        timeRange.setWeek(baseTimeRangeJson.getWeek());
+        timeRange.setWeekday(baseTimeRangeJson.getWeekday());
     }
 
     public static void checkPageable(Pageable pageable) {

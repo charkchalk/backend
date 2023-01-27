@@ -1,7 +1,7 @@
 package io.charkchalk.backend.entity.range;
 
 import io.charkchalk.backend.entity.Course;
-import io.charkchalk.backend.entity.enums.Week;
+import io.charkchalk.backend.entity.enums.Weekday;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,8 +31,8 @@ public class TimeRange {
     private LocalTime endTime;
 
     @Enumerated
-    @Column(name = "week")
-    private Week week;
+    @Column(name = "weekday")
+    private Weekday weekday;
 
     @ManyToMany(mappedBy = "timeRanges")
     @ToString.Exclude
