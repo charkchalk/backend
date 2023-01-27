@@ -35,7 +35,7 @@ public class Place {
     @ToString.Exclude
     private Collection<Place> children;
 
-    @OneToMany(mappedBy = "place")
+    @ManyToMany(mappedBy = "places")
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
 }

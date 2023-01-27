@@ -47,6 +47,10 @@ public class Course {
     @Column(name = "credit")
     private Integer credit;
 
+    @ManyToOne
+    @JoinColumn(name = "date_id")
+    private DateRange dateRange;
+
     @ManyToMany
     @JoinTable(name = "courses_tags",
             joinColumns = @JoinColumn(name = "course_id"),
@@ -54,13 +58,12 @@ public class Course {
     @ToString.Exclude
     private Collection<Tag> tags = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "place_id", nullable = false)
-    private Place place;
-
-    @ManyToOne
-    @JoinColumn(name = "date_id")
-    private DateRange dateRange;
+    @ManyToMany
+    @JoinTable(name = "courses_places",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "places_id"))
+    @ToString.Exclude
+    private Collection<Place> places = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "courses_time_ranges",
