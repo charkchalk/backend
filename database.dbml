@@ -34,7 +34,7 @@ Table courses {
     organization int [not null, ref: > organizations.id, note: "所屬組織（通常是學校，如靜宜大學等）"]
     description varchar(255) [note: "課程敘述"]
     link varchar(255) [not null, note: "課程連結（通常是課程網頁）"]
-    credits int [note: "學分數"]
+    credit int [note: "學分數"]
     tags int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
     places int [not null, ref: > places.id, note: "上課地點"]
     date_range int [ref: > date_ranges.id, note: "開課日期範圍"]
