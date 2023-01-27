@@ -1,0 +1,24 @@
+name: Build database documentation
+
+on:
+  push:
+    paths:
+      - "database.dbml"
+
+jobs:
+  build:
+    name: database.dbml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dbdocs
+        run: sudo npm install -g dbdocs
+
+      - name: Check dbdocs
+        run: dbdocs
+
+      - name: Update dbdocs project
+        env:
+          DBDOCS_TOKEN: ${{ secrets.DBDOCS_TOKEN }}
+        run: dbdocs build ./database.dbml
