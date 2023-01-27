@@ -2,7 +2,7 @@ package io.charkchalk.backend.json.range.time;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.charkchalk.backend.entity.enums.Week;
+import io.charkchalk.backend.entity.enums.Weekday;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -27,5 +27,5 @@ public class BaseTimeRangeJson {
 
     @NotNull
     @JsonProperty("week")
-    private Week week;
+    private Weekday weekday;
 }

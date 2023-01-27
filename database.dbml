@@ -75,7 +75,7 @@ Table date_ranges {
 
 Table time_ranges {
     id int [pk, increment]
-    day week [not null, note: "星期幾"]
+    day weekday [not null, note: "星期幾"]
     start_time time [not null, note: "開始時間"]
     end_time time [not null, note: "結束時間"]
 
@@ -114,7 +114,7 @@ Table organizations {
     tags int [ref: <> tags.id, note: "組織屬性（例如學校、政府計畫等）"]
 }
 
-enum week {
+enum weekday {
     sunday
     monday
     tuesday
