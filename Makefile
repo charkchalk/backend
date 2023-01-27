@@ -10,3 +10,14 @@ stop-dev-db:
 .PHONY: run
 run:
 	gradle bootRun
+
+.PHONY: test
+test:
+	gradle test
+
+.PHONY: clean
+clean:
+	gradle clean
+
+.PHONY: all
+all: run-dev-db test stop-dev-db
