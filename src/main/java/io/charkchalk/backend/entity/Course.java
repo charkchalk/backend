@@ -44,8 +44,8 @@ public class Course {
     @Column(name = "link")
     private URL link;
 
-    @Column(name = "credits")
-    private Integer credits;
+    @Column(name = "credit")
+    private Integer credit;
 
     @ManyToMany
     @JoinTable(name = "courses_tags",
