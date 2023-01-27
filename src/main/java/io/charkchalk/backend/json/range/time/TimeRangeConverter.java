@@ -23,7 +23,7 @@ public class TimeRangeConverter {
 
     public TimeRange convertToEntity(BaseTimeRangeJson baseTimeRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (timeRangeRepository.existsByStartTimeAndEndTimeAndWeek(
+        if (timeRangeRepository.existsByStartTimeAndEndTimeAndWeekday(
                 baseTimeRangeJson.getStartTime(),
                 baseTimeRangeJson.getEndTime(),
                 baseTimeRangeJson.getWeekday())) {
