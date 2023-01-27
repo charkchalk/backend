@@ -36,10 +36,10 @@ Table courses {
     link varchar(255) [not null, note: "課程連結（通常是課程網頁）"]
     credit int [note: "學分數"]
     tags int [ref: <> tags.id, note: "課程屬性（如必修、選修、必選修等）"]
-    places int [not null, ref: > places.id, note: "上課地點"]
+    places int [not null, ref: <> places.id, note: "上課地點"]
     date_range int [ref: > date_ranges.id, note: "開課日期範圍"]
     time_range int [ref: <> time_ranges.id, note: "每週上課時間"]
-    host int [ref: <> persons.id, note: "講師、負責人"]
+    hosts int [ref: <> persons.id, note: "講師、負責人"]
 
     note: "課程"
 }

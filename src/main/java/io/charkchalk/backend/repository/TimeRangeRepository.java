@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.time.LocalTime;
 
 public interface TimeRangeRepository extends PagingAndSortingRepository<TimeRange, Long> {
-    boolean existsByStartTimeAndEndTimeAndWeek(LocalTime startTime, LocalTime endTime, Weekday weekday);
+    boolean existsByStartTimeAndEndTimeAndWeekday(LocalTime startTime, LocalTime endTime, Weekday weekday);
 }
