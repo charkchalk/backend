@@ -1,5 +1,7 @@
 # Charkchalk Backend
 
+- [Database documentation](https://dbdocs.io/YukinaMochizuki/Charkchalk)
+
 ## Development
 
 ### Requirements
