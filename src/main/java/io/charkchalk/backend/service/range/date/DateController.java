@@ -34,7 +34,7 @@ public class DateController {
     @GetMapping("/api/range/date")
     public ResponseEntity<PageJson<DateRangeJson>> listDateRanges(Pageable pageable) {
         DateRangeConverter.checkPageable(pageable);
-        return ResponseEntity.ok(dateRangeConverter.convertToJsonPage(dateRangeRepository.findAll(pageable)));
+        return ResponseEntity.ok(dateRangeConverter.convertToPageJson(dateRangeRepository.findAll(pageable)));
     }
 
     @GetMapping("/api/range/date/{id}")

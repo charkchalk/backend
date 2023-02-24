@@ -36,7 +36,7 @@ public class TagController {
     @GetMapping("/api/tag")
     public ResponseEntity<PageJson<TagJson>> listTags(Pageable pageable) {
         TagConverter.checkPageable(pageable);
-        return ResponseEntity.ok(tagConverter.convertToJsonPage(tagRepository.findAll(pageable)));
+        return ResponseEntity.ok(tagConverter.convertToPageJson(tagRepository.findAll(pageable)));
     }
 
     @GetMapping("/api/tag/{id}")

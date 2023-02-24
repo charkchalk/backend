@@ -30,11 +30,7 @@ public class DateRangeConverter {
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        DateRange dateRange = new DateRange();
-        dateRange.setName(baseDateRangeJson.getName());
-        dateRange.setStartDate(baseDateRangeJson.getStartDate());
-        dateRange.setEndDate(baseDateRangeJson.getEndDate());
-        return dateRange;
+        return updateEntity(new DateRange(), baseDateRangeJson);
     }
 
     public DateRangeJson convertToJson(DateRange dateRange) {
@@ -46,7 +42,7 @@ public class DateRangeConverter {
         return dateRangeJson;
     }
 
-    public PageJson<DateRangeJson> convertToJsonPage(Page<DateRange> dateRanges) {
+    public PageJson<DateRangeJson> convertToPageJson(Page<DateRange> dateRanges) {
         PageJson<DateRangeJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(dateRanges.getTotalPages());
         pageJson.setCurrentPage(dateRanges.getNumber());
@@ -60,10 +56,11 @@ public class DateRangeConverter {
         return pageJson;
     }
 
-    public void updateEntity(DateRange dateRange, BaseDateRangeJson baseDateRangeJson) {
+    public DateRange updateEntity(DateRange dateRange, BaseDateRangeJson baseDateRangeJson) {
         dateRange.setName(baseDateRangeJson.getName());
         dateRange.setStartDate(baseDateRangeJson.getStartDate());
         dateRange.setEndDate(baseDateRangeJson.getEndDate());
+        return dateRange;
     }
 
     public static void checkPageable(Pageable pageable) {
