@@ -38,6 +38,13 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationConverter.convertToPageJson(organizationRepository.findAll(pageable)));
     }
 
+    @GetMapping("/api/organization/{id}")
+    public ResponseEntity<OrganizationJson> getOrganization(@PathVariable Long id){
+        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+        return organizationOptional.map(value -> ResponseEntity.ok(organizationConverter.convertToJson(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/api/organization/{id}")
     public ResponseEntity<OrganizationJson> putOrganization(@PathVariable Long id,
                                                             @Valid @RequestBody BaseOrganizationJson json) {
