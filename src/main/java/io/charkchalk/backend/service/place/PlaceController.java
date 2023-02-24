@@ -35,7 +35,7 @@ public class PlaceController {
     @GetMapping("/api/place")
     public ResponseEntity<PageJson<PlaceJson>> getPlace(Pageable pageable) {
         PlaceConverter.checkPageable(pageable);
-        return ResponseEntity.ok(placeConverter.convertToJsonPage(placeRepository.findAll(pageable)));
+        return ResponseEntity.ok(placeConverter.convertToPageJson(placeRepository.findAll(pageable)));
     }
 
     @GetMapping("/api/place/{id}")

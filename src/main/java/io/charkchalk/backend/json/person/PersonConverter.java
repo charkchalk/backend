@@ -31,7 +31,7 @@ public class PersonConverter {
         return personJson;
     }
 
-    public PageJson<PersonJson> convertToJsonPage(Page<Person> persons) {
+    public PageJson<PersonJson> convertToPageJson(Page<Person> persons) {
         PageJson<PersonJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(1);
         pageJson.setCurrentPage(0);

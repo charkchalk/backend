@@ -54,7 +54,7 @@ public class TimeRangeConverter {
         return timeRangeJson;
     }
 
-    public PageJson<TimeRangeJson> convertToJsonPage(Page<TimeRange> timeRanges) {
+    public PageJson<TimeRangeJson> convertToPageJson(Page<TimeRange> timeRanges) {
         PageJson<TimeRangeJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(timeRanges.getTotalPages());
         pageJson.setCurrentPage(timeRanges.getNumber());

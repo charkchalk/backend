@@ -37,7 +37,7 @@ public class PlaceConverter {
         return placeJson;
     }
 
-    public PageJson<PlaceJson> convertToJsonPage(Page<Place> places) {
+    public PageJson<PlaceJson> convertToPageJson(Page<Place> places) {
         PageJson<PlaceJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(places.getTotalPages());
         pageJson.setCurrentPage(places.getNumber());

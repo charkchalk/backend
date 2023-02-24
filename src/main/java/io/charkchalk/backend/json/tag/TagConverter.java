@@ -46,7 +46,7 @@ public class TagConverter {
         return tagJson;
     }
 
-    public PageJson<TagJson> convertToJsonPage(Page<Tag> tags) {
+    public PageJson<TagJson> convertToPageJson(Page<Tag> tags) {
         PageJson<TagJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(tags.getTotalPages());
         pageJson.setCurrentPage(tags.getNumber());

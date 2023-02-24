@@ -36,7 +36,7 @@ public class PersonController {
     @GetMapping("/api/person")
     public ResponseEntity<PageJson<PersonJson>> getPerson(Pageable pageable) {
         PersonConverter.checkPageable(pageable);
-        return ResponseEntity.ok(personConverter.convertToJsonPage(personRepository.findAll(pageable)));
+        return ResponseEntity.ok(personConverter.convertToPageJson(personRepository.findAll(pageable)));
     }
 
     @GetMapping("/api/person/{id}")

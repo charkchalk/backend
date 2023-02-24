@@ -36,7 +36,7 @@ public class TimeController {
     @GetMapping("/api/range/time")
     public ResponseEntity<PageJson<TimeRangeJson>> listTimeRanges(Pageable pageable) {
         TimeRangeConverter.checkPageable(pageable);
-        return ResponseEntity.ok(timeRangeConverter.convertToJsonPage(timeRangeRepository.findAll(pageable)));
+        return ResponseEntity.ok(timeRangeConverter.convertToPageJson(timeRangeRepository.findAll(pageable)));
     }
 
     @GetMapping("/api/range/time/{id}")

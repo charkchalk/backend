@@ -46,7 +46,7 @@ public class DateRangeConverter {
         return dateRangeJson;
     }
 
-    public PageJson<DateRangeJson> convertToJsonPage(Page<DateRange> dateRanges) {
+    public PageJson<DateRangeJson> convertToPageJson(Page<DateRange> dateRanges) {
         PageJson<DateRangeJson> pageJson = new PageJson<>();
         pageJson.setTotalPages(dateRanges.getTotalPages());
         pageJson.setCurrentPage(dateRanges.getNumber());
