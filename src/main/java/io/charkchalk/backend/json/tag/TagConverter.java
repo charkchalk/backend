@@ -30,11 +30,7 @@ public class TagConverter {
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        Tag tag = new Tag();
-        tag.setName(baseTagJson.getName());
-        tag.setDescription(baseTagJson.getDescription());
-        tag.setTagLimit(baseTagJson.getTagLimit());
-        return tag;
+        return updateEntity(new Tag(), baseTagJson);
     }
 
     public TagJson convertToJson(@NotNull Tag tag) {
@@ -60,10 +56,11 @@ public class TagConverter {
         return pageJson;
     }
 
-    public void updateEntity(@NotNull Tag tag, @NotNull BaseTagJson baseTagJson) {
+    public Tag updateEntity(@NotNull Tag tag, @NotNull BaseTagJson baseTagJson) {
         tag.setName(baseTagJson.getName());
         tag.setDescription(baseTagJson.getDescription());
         tag.setTagLimit(baseTagJson.getTagLimit());
+        return tag;
     }
 
     public static void checkPageable(Pageable pageable) {

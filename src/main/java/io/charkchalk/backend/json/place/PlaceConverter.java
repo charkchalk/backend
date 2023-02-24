@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,11 +22,15 @@ public class PlaceConverter {
     private PlaceRepository placeRepository;
 
     public Place convertToEntity(BasePlaceJson basePlaceJson) {
-        Place place = new Place();
-        place.setName(basePlaceJson.getName());
-        place.setDescription(basePlaceJson.getDescription());
-        place.setParent(placeRepository.findById(basePlaceJson.getParent()).orElse(null));
-        return place;
+        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
+        if (placeRepository.existsByName(basePlaceJson.getName())) {
+            fieldNotValidItems.add(FieldNotValidItem
+                    .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
+        }
+
+        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
+
+        return updateEntity(new Place(), basePlaceJson);
     }
 
     public PlaceJson convertToJson(Place place) {
@@ -50,10 +55,11 @@ public class PlaceConverter {
         return pageJson;
     }
 
-    public void updateEntity(Place place, BasePlaceJson basePlaceJson) {
+    public Place updateEntity(Place place, BasePlaceJson basePlaceJson) {
         place.setName(basePlaceJson.getName());
         place.setDescription(basePlaceJson.getDescription());
         place.setParent(placeRepository.findById(basePlaceJson.getParent()).orElse(null));
+        return place;
     }
 
     public static void checkPageable(Pageable pageable) {

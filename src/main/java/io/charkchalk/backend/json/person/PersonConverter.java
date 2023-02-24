@@ -15,11 +15,7 @@ import java.util.Set;
 @Component
 public class PersonConverter {
     public Person convertToEntity(BasePersonJson basePersonJson) {
-        Person person = new Person();
-        person.setName(basePersonJson.getName());
-        person.setDescription(basePersonJson.getDescription());
-        person.setLink(basePersonJson.getLink());
-        return person;
+        return updateEntity(new Person(), basePersonJson);
     }
 
     public PersonJson convertToJson(Person person) {
@@ -44,10 +40,11 @@ public class PersonConverter {
         return pageJson;
     }
 
-    public void updateEntity(Person person, BasePersonJson basePersonJson) {
+    public Person updateEntity(Person person, BasePersonJson basePersonJson) {
         person.setName(basePersonJson.getName());
         person.setDescription(basePersonJson.getDescription());
         person.setLink(basePersonJson.getLink());
+        return person;
     }
 
     public static void checkPageable(Pageable pageable) {

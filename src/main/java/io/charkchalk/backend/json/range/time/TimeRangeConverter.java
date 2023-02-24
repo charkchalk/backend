@@ -38,11 +38,7 @@ public class TimeRangeConverter {
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        TimeRange timeRange = new TimeRange();
-        timeRange.setStartTime(baseTimeRangeJson.getStartTime());
-        timeRange.setEndTime(baseTimeRangeJson.getEndTime());
-        timeRange.setWeekday(baseTimeRangeJson.getWeekday());
-        return timeRange;
+        return updateEntity(new TimeRange(), baseTimeRangeJson);
     }
 
     public TimeRangeJson convertToJson(TimeRange timeRange) {
@@ -68,10 +64,11 @@ public class TimeRangeConverter {
         return pageJson;
     }
 
-    public void updateEntity(TimeRange timeRange, BaseTimeRangeJson baseTimeRangeJson) {
+    public TimeRange updateEntity(TimeRange timeRange, BaseTimeRangeJson baseTimeRangeJson) {
         timeRange.setStartTime(baseTimeRangeJson.getStartTime());
         timeRange.setEndTime(baseTimeRangeJson.getEndTime());
         timeRange.setWeekday(baseTimeRangeJson.getWeekday());
+        return timeRange;
     }
 
     public static void checkPageable(Pageable pageable) {
