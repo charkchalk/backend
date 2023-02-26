@@ -29,4 +29,9 @@ public class FieldNotValidItem {
         String message = String.format("No property %s found in entity %s", property, entity);
         return new FieldNotValidItem("sort", FieldNotValidType.SortPropertyNotFound, message);
     }
+
+    public static FieldNotValidItem entityFieldShouldNotUpdatable(String fieldName, String entity) {
+        String message = String.format("Field %s of entity %s should not be updated", fieldName, entity);
+        return new FieldNotValidItem(fieldName, FieldNotValidType.FieldShouldNotUpdatable, message);
+    }
 }
