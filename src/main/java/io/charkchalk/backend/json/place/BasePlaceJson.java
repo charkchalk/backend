@@ -19,6 +19,6 @@ public class BasePlaceJson {
     private String description;
 
     @NotBlank
-    @JsonProperty("parent")
-    private Long parent;
+    @JsonProperty("parent_slug")
+    private String parentSlug;
 }
