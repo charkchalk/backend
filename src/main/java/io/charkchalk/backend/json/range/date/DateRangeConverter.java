@@ -21,21 +21,20 @@ public class DateRangeConverter {
     @Autowired
     private DateRangeRepository dateRangeRepository;
 
-    public DateRange convertToEntity(BaseDateRangeJson baseDateRangeJson) {
+    public DateRange convertToEntity(DateRangeJson dateRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
+        if (dateRangeRepository.existsByName(dateRangeJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem
-                    .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
+                    .entityAlreadyExists("name", "DateRange", dateRangeJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        return updateEntity(new DateRange(), baseDateRangeJson);
+        return updateEntity(new DateRange(), dateRangeJson);
     }
 
     public DateRangeJson convertToJson(DateRange dateRange) {
         DateRangeJson dateRangeJson = new DateRangeJson();
-        dateRangeJson.setId(dateRange.getId());
         dateRangeJson.setName(dateRange.getName());
         dateRangeJson.setStartDate(dateRange.getStartDate());
         dateRangeJson.setEndDate(dateRange.getEndDate());
@@ -56,10 +55,10 @@ public class DateRangeConverter {
         return pageJson;
     }
 
-    public DateRange updateEntity(DateRange dateRange, BaseDateRangeJson baseDateRangeJson) {
-        dateRange.setName(baseDateRangeJson.getName());
-        dateRange.setStartDate(baseDateRangeJson.getStartDate());
-        dateRange.setEndDate(baseDateRangeJson.getEndDate());
+    public DateRange updateEntity(DateRange dateRange, DateRangeJson dateRangeJson) {
+        dateRange.setName(dateRangeJson.getName());
+        dateRange.setStartDate(dateRangeJson.getStartDate());
+        dateRange.setEndDate(dateRangeJson.getEndDate());
         return dateRange;
     }
 
