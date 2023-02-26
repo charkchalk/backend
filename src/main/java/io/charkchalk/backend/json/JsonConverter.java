@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class JsonConverter {
     public static void checkFieldNotValidException(List<FieldNotValidItem> fieldNotValidItems) {
@@ -31,5 +32,10 @@ public class JsonConverter {
         }
 
         return fieldNotValidItems;
+    }
+
+    public static String generateSlug(String name) {
+        String randomString = UUID.randomUUID().toString().replace("-","").substring(0,8);
+        return name.toLowerCase().replace(" ", "-") + "-" + randomString;
     }
 }
