@@ -38,7 +38,7 @@ public class OrganizationController {
     }
 
     @GetMapping("/api/organization/{name}")
-    public ResponseEntity<OrganizationJson> getOrganization(@PathVariable String name){
+    public ResponseEntity<OrganizationJson> getOrganization(@PathVariable String name) {
         Optional<Organization> organizationOptional = organizationRepository.findByName(name);
         return organizationOptional.map(value -> ResponseEntity.ok(organizationConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());

@@ -53,7 +53,7 @@ public class PlaceConverter {
         if (place.getName() != null && !place.getName().equals(basePlaceJson.getName())) {
             if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), place.getParent())) {
                 fieldNotValidItems.add(FieldNotValidItem
-                        .entityFieldShouldNotUpdatable("name", "Place"));
+                        .entityFieldNotUpdatable("name", "Place"));
             }
         }
 

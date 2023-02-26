@@ -30,8 +30,8 @@ public class FieldNotValidItem {
         return new FieldNotValidItem("sort", FieldNotValidType.SortPropertyNotFound, message);
     }
 
-    public static FieldNotValidItem entityFieldShouldNotUpdatable(String fieldName, String entity) {
-        String message = String.format("Field %s of entity %s should not be updated", fieldName, entity);
-        return new FieldNotValidItem(fieldName, FieldNotValidType.FieldShouldNotUpdatable, message);
+    public static FieldNotValidItem entityFieldNotUpdatable(String fieldName, String entity) {
+        String message = String.format("Field %s of entity %s is not updatable", fieldName, entity);
+        return new FieldNotValidItem(fieldName, FieldNotValidType.FieldNotUpdatable, message);
     }
 }

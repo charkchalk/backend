@@ -4,5 +4,5 @@ public enum FieldNotValidType {
     EntityNotFound,
     EntityAlreadyExists,
     SortPropertyNotFound,
-    FieldShouldNotUpdatable
+    FieldNotUpdatable
 }

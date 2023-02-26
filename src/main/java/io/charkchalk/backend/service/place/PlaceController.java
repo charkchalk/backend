@@ -46,7 +46,8 @@ public class PlaceController {
     }
 
     @PutMapping("/api/place/{slug}")
-    public ResponseEntity<PlaceJson> putPlace(@PathVariable String slug, @Valid @RequestBody BasePlaceJson basePlaceJson) {
+    public ResponseEntity<PlaceJson> putPlace(@PathVariable String slug,
+                                              @Valid @RequestBody BasePlaceJson basePlaceJson) {
         Optional<Place> placeOptional = placeRepository.findBySlug(slug);
         if (placeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
