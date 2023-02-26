@@ -23,23 +23,22 @@ public class OrganizationConverter {
     @Autowired
     private TagRepository tagRepository;
 
-    public Organization convertToEntity(BaseOrganizationJson baseOrganizationJson) {
+    public Organization convertToEntity(OrganizationJson organizationJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (organizationRepository.existsByName(baseOrganizationJson.getName())) {
+        if (organizationRepository.existsByName(organizationJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem
-                    .entityAlreadyExists("name", "Organization", baseOrganizationJson.getName()));
+                    .entityAlreadyExists("name", "Organization", organizationJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
         Organization organization = new Organization();
-        this.updateEntity(organization, baseOrganizationJson);
+        this.updateEntity(organization, organizationJson);
         return organization;
     }
 
     public OrganizationJson convertToJson(Organization organization) {
         OrganizationJson organizationJson = new OrganizationJson();
-        organizationJson.setId(organization.getId());
         organizationJson.setName(organization.getName());
         organizationJson.setDescription(organization.getDescription());
 
@@ -67,13 +66,12 @@ public class OrganizationConverter {
         return pageJson;
     }
 
-    public void updateEntity(Organization organization, BaseOrganizationJson baseOrganizationJson) {
-        organization.setName(baseOrganizationJson.getName());
-        organization.setDescription(baseOrganizationJson.getDescription());
+    public void updateEntity(Organization organization, OrganizationJson organizationJson) {
+        organization.setName(organizationJson.getName());
+        organization.setDescription(organizationJson.getDescription());
 
         Collection<Tag> tags = new HashSet<>();
-
-        for (String tagName : baseOrganizationJson.getTags()) {
+        for (String tagName : organizationJson.getTags()) {
             tagRepository.findByName(tagName).ifPresent(tags::add);
         }
 

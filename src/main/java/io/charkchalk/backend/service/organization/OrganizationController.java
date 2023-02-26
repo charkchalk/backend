@@ -2,9 +2,8 @@ package io.charkchalk.backend.service.organization;
 
 import io.charkchalk.backend.entity.Organization;
 import io.charkchalk.backend.json.PageJson;
-import io.charkchalk.backend.json.organization.BaseOrganizationJson;
-import io.charkchalk.backend.json.organization.OrganizationConverter;
 import io.charkchalk.backend.json.organization.OrganizationJson;
+import io.charkchalk.backend.json.organization.OrganizationConverter;
 import io.charkchalk.backend.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +25,7 @@ public class OrganizationController {
     private OrganizationRepository organizationRepository;
 
     @PostMapping("/api/organization")
-    public ResponseEntity<OrganizationJson> createOrganization(@Valid @RequestBody BaseOrganizationJson json) {
+    public ResponseEntity<OrganizationJson> createOrganization(@Valid @RequestBody OrganizationJson json) {
         Organization organization = organizationConverter.convertToEntity(json);
         organization = organizationRepository.save(organization);
         return ResponseEntity.ok(organizationConverter.convertToJson(organization));
@@ -38,17 +37,17 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationConverter.convertToPageJson(organizationRepository.findAll(pageable)));
     }
 
-    @GetMapping("/api/organization/{id}")
-    public ResponseEntity<OrganizationJson> getOrganization(@PathVariable Long id){
-        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+    @GetMapping("/api/organization/{name}")
+    public ResponseEntity<OrganizationJson> getOrganization(@PathVariable String name){
+        Optional<Organization> organizationOptional = organizationRepository.findByName(name);
         return organizationOptional.map(value -> ResponseEntity.ok(organizationConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/organization/{id}")
-    public ResponseEntity<OrganizationJson> putOrganization(@PathVariable Long id,
-                                                            @Valid @RequestBody BaseOrganizationJson json) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+    @PutMapping("/api/organization/{name}")
+    public ResponseEntity<OrganizationJson> putOrganization(@PathVariable String name,
+                                                            @Valid @RequestBody OrganizationJson json) {
+        Optional<Organization> organizationOptional = organizationRepository.findByName(name);
         if (organizationOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -58,9 +57,9 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationConverter.convertToJson(organization));
     }
 
-    @DeleteMapping("/api/organization/{id}")
-    public ResponseEntity<Void> deleteOrganization(@PathVariable Long id) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+    @DeleteMapping("/api/organization/{name}")
+    public ResponseEntity<Void> deleteOrganization(@PathVariable String name) {
+        Optional<Organization> organizationOptional = organizationRepository.findByName(name);
         if (organizationOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
