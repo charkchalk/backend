@@ -22,20 +22,19 @@ public class TagConverter {
     @Autowired
     private TagRepository tagRepository;
 
-    public Tag convertToEntity(@NotNull BaseTagJson baseTagJson) {
+    public Tag convertToEntity(@NotNull TagJson tagJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (tagRepository.existsByName(baseTagJson.getName())) {
-            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", baseTagJson.getName()));
+        if (tagRepository.existsByName(tagJson.getName())) {
+            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", tagJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        return updateEntity(new Tag(), baseTagJson);
+        return updateEntity(new Tag(), tagJson);
     }
 
     public TagJson convertToJson(@NotNull Tag tag) {
         TagJson tagJson = new TagJson();
-        tagJson.setId(tag.getId());
         tagJson.setName(tag.getName());
         tagJson.setDescription(tag.getDescription());
         tagJson.setTagLimit(tag.getTagLimit());
@@ -56,10 +55,10 @@ public class TagConverter {
         return pageJson;
     }
 
-    public Tag updateEntity(@NotNull Tag tag, @NotNull BaseTagJson baseTagJson) {
-        tag.setName(baseTagJson.getName());
-        tag.setDescription(baseTagJson.getDescription());
-        tag.setTagLimit(baseTagJson.getTagLimit());
+    public Tag updateEntity(@NotNull Tag tag, @NotNull TagJson tagJson) {
+        tag.setName(tagJson.getName());
+        tag.setDescription(tagJson.getDescription());
+        tag.setTagLimit(tagJson.getTagLimit());
         return tag;
     }
 

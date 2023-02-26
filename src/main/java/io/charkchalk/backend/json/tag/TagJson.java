@@ -1,16 +1,26 @@
 package io.charkchalk.backend.json.tag;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.charkchalk.backend.entity.enums.TagLimit;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class TagJson extends BaseTagJson {
-    @Min(1)
-    @JsonProperty("id")
-    private Long id;
+public class TagJson {
+
+    @NotBlank
+    @JsonProperty("name")
+    private String name;
+
+    @NotBlank
+    @JsonProperty("description")
+    private String description;
+
+    @NotNull
+    @JsonProperty("limit")
+    private TagLimit tagLimit;
 }
