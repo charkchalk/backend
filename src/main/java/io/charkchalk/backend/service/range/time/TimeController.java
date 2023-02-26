@@ -39,6 +39,7 @@ public class TimeController {
         return ResponseEntity.ok(timeRangeConverter.convertToPageJson(timeRangeRepository.findAll(pageable)));
     }
 
+//    Todo: @PreAuthorize(potential security risk)
     @GetMapping("/api/range/time/{id}")
     public ResponseEntity<TimeRangeJson> getTimeRange(@PathVariable @NotNull Long id) {
         return timeRangeRepository.findById(id)
@@ -46,20 +47,7 @@ public class TimeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/range/time/{id}")
-    public ResponseEntity<TimeRangeJson> putTimeRange(@PathVariable @NotNull Long id,
-                                                      @Valid @RequestBody BaseTimeRangeJson baseTimeRangeJson) {
-        Optional<TimeRange> timeRangeOptional = timeRangeRepository.findById(id);
-        if (timeRangeOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        TimeRange timeRange = timeRangeOptional.get();
-        timeRangeConverter.updateEntity(timeRange, baseTimeRangeJson);
-        timeRangeRepository.save(timeRange);
-        return ResponseEntity.ok(timeRangeConverter.convertToJson(timeRange));
-    }
-
+//    Todo: @PreAuthorize(potential security risk)
     @DeleteMapping("/api/range/time/{id}")
     public ResponseEntity<Void> deleteTimeRange(@PathVariable @NotNull Long id) {
         Optional<TimeRange> timeRangeOptional = timeRangeRepository.findById(id);

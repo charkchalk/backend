@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Table(name = "places")
+@Table(name = "places", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "parent_id"})
+})
 @Getter
 @Setter
 @ToString
@@ -21,7 +23,10 @@ public class Place {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "slug", nullable = false, unique = true, updatable = false)
+    private String slug;
+
+    @Column(name = "name", nullable = false, updatable = false)
     private String name;
 
     @Column(name = "description", nullable = false)

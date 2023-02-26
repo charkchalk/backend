@@ -10,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class PlaceConverter {
@@ -23,22 +20,16 @@ public class PlaceConverter {
 
     public Place convertToEntity(BasePlaceJson basePlaceJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (placeRepository.existsByName(basePlaceJson.getName())) {
-            fieldNotValidItems.add(FieldNotValidItem
-                    .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
-        }
-
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
-
         return updateEntity(new Place(), basePlaceJson);
     }
 
     public PlaceJson convertToJson(Place place) {
         PlaceJson placeJson = new PlaceJson();
-        placeJson.setId(place.getId());
         placeJson.setName(place.getName());
+        placeJson.setSlug(place.getSlug());
         placeJson.setDescription(place.getDescription());
-        placeJson.setParent(place.getParent().getId());
+        placeJson.setParentSlug(place.getSlug());
         return placeJson;
     }
 
@@ -56,9 +47,45 @@ public class PlaceConverter {
     }
 
     public Place updateEntity(Place place, BasePlaceJson basePlaceJson) {
+        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
+
+//      Name is not updatable
+        if (place.getName() != null && !place.getName().equals(basePlaceJson.getName())) {
+            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), place.getParent())) {
+                fieldNotValidItems.add(FieldNotValidItem
+                        .entityFieldNotUpdatable("name", "Place"));
+            }
+        }
+
         place.setName(basePlaceJson.getName());
+
+//      Name and parent are constraint unique
+        if (basePlaceJson.getParentSlug() != null) {
+            Optional<Place> parent = placeRepository.findBySlug(basePlaceJson.getParentSlug());
+            if (parent.isEmpty()) {
+                fieldNotValidItems.add(FieldNotValidItem
+                        .entityNotFound("parentSlug", "Place", basePlaceJson.getParentSlug()));
+            } else {
+                if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), parent.get())) {
+                    fieldNotValidItems.add(FieldNotValidItem
+                            .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
+                } else {
+                    place.setParent(parent.get());
+                }
+            }
+        } else {
+            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), null)) {
+                fieldNotValidItems.add(FieldNotValidItem
+                        .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
+            }
+        }
+
+        if (place.getSlug() == null) {
+            place.setSlug(JsonConverter.generateSlug(place.getName()));
+        }
+
         place.setDescription(basePlaceJson.getDescription());
-        place.setParent(placeRepository.findById(basePlaceJson.getParent()).orElse(null));
+        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return place;
     }
 

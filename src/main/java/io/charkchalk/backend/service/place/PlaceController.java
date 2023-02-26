@@ -38,16 +38,17 @@ public class PlaceController {
         return ResponseEntity.ok(placeConverter.convertToPageJson(placeRepository.findAll(pageable)));
     }
 
-    @GetMapping("/api/place/{id}")
-    public ResponseEntity<PlaceJson> getPlace(@PathVariable Long id) {
-        Optional<Place> placeOptional = placeRepository.findById(id);
+    @GetMapping("/api/place/{slug}")
+    public ResponseEntity<PlaceJson> getPlace(@PathVariable String slug) {
+        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
         return placeOptional.map(value -> ResponseEntity.ok(placeConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/place/{id}")
-    public ResponseEntity<PlaceJson> putPlace(@PathVariable Long id, @Valid @RequestBody BasePlaceJson basePlaceJson) {
-        Optional<Place> placeOptional = placeRepository.findById(id);
+    @PutMapping("/api/place/{slug}")
+    public ResponseEntity<PlaceJson> putPlace(@PathVariable String slug,
+                                              @Valid @RequestBody BasePlaceJson basePlaceJson) {
+        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
         if (placeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -57,9 +58,9 @@ public class PlaceController {
         return ResponseEntity.ok(placeConverter.convertToJson(place));
     }
 
-    @DeleteMapping("/api/place/{id}")
-    public ResponseEntity<Void> deletePlace(@PathVariable Long id) {
-        Optional<Place> placeOptional = placeRepository.findById(id);
+    @DeleteMapping("/api/place/{slug}")
+    public ResponseEntity<Void> deletePlace(@PathVariable String slug) {
+        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
         if (placeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

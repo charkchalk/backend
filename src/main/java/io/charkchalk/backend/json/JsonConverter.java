@@ -8,8 +8,12 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class JsonConverter {
+
+    private static final int DEFAULT_RANDOM_STRING_LENGTH = 8;
+
     public static void checkFieldNotValidException(List<FieldNotValidItem> fieldNotValidItems) {
         if (!fieldNotValidItems.isEmpty()) {
             throw new FieldNotValidException(fieldNotValidItems);
@@ -31,5 +35,10 @@ public class JsonConverter {
         }
 
         return fieldNotValidItems;
+    }
+
+    public static String generateSlug(String name) {
+        String randomString = UUID.randomUUID().toString().replace("-", "").substring(0, DEFAULT_RANDOM_STRING_LENGTH);
+        return name.toLowerCase().replace(" ", "-") + "-" + randomString;
     }
 }
