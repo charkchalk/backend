@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "date_range")
@@ -23,8 +24,15 @@ public class DateRange {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    private UUID uuid;
+
     @Column(name = "name", unique = true)
     private String name;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;

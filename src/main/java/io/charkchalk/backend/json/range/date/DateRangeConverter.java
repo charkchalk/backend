@@ -21,21 +21,22 @@ public class DateRangeConverter {
     @Autowired
     private DateRangeRepository dateRangeRepository;
 
-    public DateRange convertToEntity(DateRangeJson dateRangeJson) {
+    public DateRange convertToEntity(BaseDateRangeJson baseDateRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (dateRangeRepository.existsByName(dateRangeJson.getName())) {
+        if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
             fieldNotValidItems.add(FieldNotValidItem
-                    .entityAlreadyExists("name", "DateRange", dateRangeJson.getName()));
+                    .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        return updateEntity(new DateRange(), dateRangeJson);
+        return updateEntity(new DateRange(), baseDateRangeJson);
     }
 
     public DateRangeJson convertToJson(DateRange dateRange) {
         DateRangeJson dateRangeJson = new DateRangeJson();
         dateRangeJson.setName(dateRange.getName());
+        dateRangeJson.setUuid(dateRange.getUuid());
         dateRangeJson.setStartDate(dateRange.getStartDate());
         dateRangeJson.setEndDate(dateRange.getEndDate());
         return dateRangeJson;
@@ -55,10 +56,22 @@ public class DateRangeConverter {
         return pageJson;
     }
 
-    public DateRange updateEntity(DateRange dateRange, DateRangeJson dateRangeJson) {
-        dateRange.setName(dateRangeJson.getName());
-        dateRange.setStartDate(dateRangeJson.getStartDate());
-        dateRange.setEndDate(dateRangeJson.getEndDate());
+    public DateRange updateEntity(DateRange dateRange, BaseDateRangeJson baseDateRangeJson) {
+        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
+
+        if (!dateRange.getName().equals(baseDateRangeJson.getName())) {
+            if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
+                fieldNotValidItems.add(FieldNotValidItem
+                        .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
+            }
+
+            dateRange.setName(baseDateRangeJson.getName());
+        }
+
+        dateRange.setStartDate(baseDateRangeJson.getStartDate());
+        dateRange.setEndDate(baseDateRangeJson.getEndDate());
+
+        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return dateRange;
     }
 
