@@ -48,7 +48,8 @@ public class TagController {
     }
 
     @PutMapping("/api/tag/{uuid}")
-    public ResponseEntity<TagJson> putTag(@PathVariable @NotNull UUID uuid, @Valid @RequestBody BaseTagJson baseTagJson) {
+    public ResponseEntity<TagJson> putTag(@PathVariable @NotNull UUID uuid,
+                                          @Valid @RequestBody BaseTagJson baseTagJson) {
         Optional<Tag> tagOptional = tagRepository.findByUuid(uuid);
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
