@@ -23,24 +23,16 @@ public class OrganizationConverter {
     @Autowired
     private TagRepository tagRepository;
 
-    public Organization convertToEntity(OrganizationJson organizationJson) {
-        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (organizationRepository.existsByName(organizationJson.getName())) {
-            fieldNotValidItems.add(FieldNotValidItem
-                    .entityAlreadyExists("name", "Organization", organizationJson.getName()));
-        }
-
-        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
-
-        Organization organization = new Organization();
-        this.updateEntity(organization, organizationJson);
-        return organization;
+    public Organization convertToEntity(BaseOrganizationJson baseOrganizationJson) {
+        return updateEntity(new Organization(), baseOrganizationJson);
     }
 
     public OrganizationJson convertToJson(Organization organization) {
         OrganizationJson organizationJson = new OrganizationJson();
         organizationJson.setName(organization.getName());
+        organizationJson.setUuid(organization.getUuid());
         organizationJson.setDescription(organization.getDescription());
+        organizationJson.setParentUuid(organization.getParent().getUuid());
 
         Collection<String> tags = new HashSet<>();
 
@@ -66,16 +58,45 @@ public class OrganizationConverter {
         return pageJson;
     }
 
-    public void updateEntity(Organization organization, OrganizationJson organizationJson) {
-        organization.setName(organizationJson.getName());
-        organization.setDescription(organizationJson.getDescription());
+    public Organization updateEntity(Organization organization, BaseOrganizationJson baseOrganizationJson) {
+        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-        Collection<Tag> tags = new HashSet<>();
-        for (String tagName : organizationJson.getTags()) {
-            tagRepository.findByName(tagName).ifPresent(tags::add);
+        organization.setDescription(baseOrganizationJson.getDescription());
+
+//      Check field organization's name or parent member is changed in baseOrganizationJson
+        if (!organization.getName().equals(baseOrganizationJson.getName()) ||
+                !organization.getParent().getUuid().equals(baseOrganizationJson.getParentUuid())) {
+            Optional<Organization> newParent = organizationRepository.findByUuid(baseOrganizationJson.getParentUuid());
+
+            if (newParent.isEmpty()) {
+                fieldNotValidItems.add(FieldNotValidItem
+                        .entityNotFound("parentUuid", "Organization",
+                                baseOrganizationJson.getParentUuid().toString()));
+            } else {
+//              Check if organization's name and parent are unique
+                if (organizationRepository.existsByNameAndParent(baseOrganizationJson.getName(), newParent.get())) {
+                    fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name/parent", "Organization",
+                            baseOrganizationJson.getName() + "/" + baseOrganizationJson.getParentUuid().toString()));
+                }
+
+                organization.setName(baseOrganizationJson.getName());
+                organization.setParent(newParent.get());
+            }
         }
 
+        Collection<Tag> tags = new HashSet<>();
+        for (String tagName : baseOrganizationJson.getTags()) {
+            Optional<Tag> tag = tagRepository.findByName(tagName);
+            if (tag.isEmpty()) {
+                fieldNotValidItems.add(FieldNotValidItem.entityNotFound("tags", "Tag", tagName));
+            } else {
+                tags.add(tag.get());
+            }
+        }
         organization.setTags(tags);
+
+        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
+        return organization;
     }
 
     public static void checkPageable(Pageable pageable) {
