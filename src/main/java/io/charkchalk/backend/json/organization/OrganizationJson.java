@@ -7,6 +7,6 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class OrganizationJson extends BaseOrganizationJson{
+public class OrganizationJson extends BaseOrganizationJson {
     private UUID uuid;
 }
