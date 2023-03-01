@@ -47,39 +47,22 @@ public class PlaceConverter {
     public Place updateEntity(Place place, BasePlaceJson basePlaceJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-//      Name is not updatable
-        if (place.getName() != null && !place.getName().equals(basePlaceJson.getName())) {
-            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), place.getParent())) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityFieldNotUpdatable("name", "Place"));
-            }
-        }
-
+//      Todo: pre-check if name, parentUUID is unique
         place.setName(basePlaceJson.getName());
+        place.setDescription(basePlaceJson.getDescription());
 
-//      Name and parent are constraint unique
         if (basePlaceJson.getParentUUID() != null) {
             Optional<Place> parent = placeRepository.findByUuid(basePlaceJson.getParentUUID());
-            if (parent.isEmpty()) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityNotFound("parentSlug", "Place",
-                                basePlaceJson.getParentUUID().toString()));
+            if (parent.isPresent()) {
+                place.setParent(parent.get());
             } else {
-                if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), parent.get())) {
-                    fieldNotValidItems.add(FieldNotValidItem
-                            .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
-                } else {
-                    place.setParent(parent.get());
-                }
+                fieldNotValidItems.add(FieldNotValidItem.entityNotFound("parent", "Place",
+                        basePlaceJson.getParentUUID().toString()));
             }
         } else {
-            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), null)) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
-            }
+            place.setParent(null);
         }
 
-        place.setDescription(basePlaceJson.getDescription());
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return place;
     }
