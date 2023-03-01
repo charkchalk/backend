@@ -9,9 +9,12 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
-@Table(name = "tags")
+@Table(name = "tags", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "tag_limit"})
+})
 @Getter
 @Setter
 @ToString
@@ -22,7 +25,11 @@ public class Tag {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    private UUID uuid;
+
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")

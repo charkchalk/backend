@@ -22,20 +22,21 @@ public class TagConverter {
     @Autowired
     private TagRepository tagRepository;
 
-    public Tag convertToEntity(@NotNull TagJson tagJson) {
+    public Tag convertToEntity(@NotNull BaseTagJson baseTagJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        if (tagRepository.existsByName(tagJson.getName())) {
-            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", tagJson.getName()));
+        if (tagRepository.existsByName(baseTagJson.getName())) {
+            fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name", "Tag", baseTagJson.getName()));
         }
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
 
-        return updateEntity(new Tag(), tagJson);
+        return updateEntity(new Tag(), baseTagJson);
     }
 
     public TagJson convertToJson(@NotNull Tag tag) {
         TagJson tagJson = new TagJson();
         tagJson.setName(tag.getName());
+        tagJson.setUuid(tag.getUuid());
         tagJson.setDescription(tag.getDescription());
         tagJson.setTagLimit(tag.getTagLimit());
         return tagJson;
@@ -55,10 +56,22 @@ public class TagConverter {
         return pageJson;
     }
 
-    public Tag updateEntity(@NotNull Tag tag, @NotNull TagJson tagJson) {
-        tag.setName(tagJson.getName());
-        tag.setDescription(tagJson.getDescription());
-        tag.setTagLimit(tagJson.getTagLimit());
+    public Tag updateEntity(@NotNull Tag tag, @NotNull BaseTagJson baseTagJson) {
+        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
+
+        tag.setDescription(baseTagJson.getDescription());
+
+        if (!tag.getName().equals(baseTagJson.getName()) || !tag.getTagLimit().equals(baseTagJson.getTagLimit())) {
+            if (tagRepository.existsByNameAndTagLimit(baseTagJson.getName(), baseTagJson.getTagLimit())) {
+                fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name/tagLimit", "Tag",
+                        baseTagJson.getName() + "/" + baseTagJson.getTagLimit()));
+            }
+
+            tag.setName(baseTagJson.getName());
+            tag.setTagLimit(baseTagJson.getTagLimit());
+        }
+
+        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return tag;
     }
 

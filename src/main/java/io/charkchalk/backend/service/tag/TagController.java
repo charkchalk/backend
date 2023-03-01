@@ -2,8 +2,9 @@ package io.charkchalk.backend.service.tag;
 
 import io.charkchalk.backend.entity.Tag;
 import io.charkchalk.backend.json.PageJson;
-import io.charkchalk.backend.json.tag.TagJson;
+import io.charkchalk.backend.json.tag.BaseTagJson;
 import io.charkchalk.backend.json.tag.TagConverter;
+import io.charkchalk.backend.json.tag.TagJson;
 import io.charkchalk.backend.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @RestController
@@ -26,8 +28,8 @@ public class TagController {
     private TagRepository tagRepository;
 
     @PostMapping("/api/tag")
-    public ResponseEntity<TagJson> createTag(@Valid @RequestBody TagJson tagJson) {
-        Tag tag = tagConverter.convertToEntity(tagJson);
+    public ResponseEntity<BaseTagJson> createTag(@Valid @RequestBody BaseTagJson baseTagJson) {
+        Tag tag = tagConverter.convertToEntity(baseTagJson);
         tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
@@ -38,28 +40,28 @@ public class TagController {
         return ResponseEntity.ok(tagConverter.convertToPageJson(tagRepository.findAll(pageable)));
     }
 
-    @GetMapping("/api/tag/{name}")
-    public ResponseEntity<TagJson> getTag(@PathVariable @NotNull String name) {
-        Optional<Tag> tagOptional = tagRepository.findByName(name);
+    @GetMapping("/api/tag/{uuid}")
+    public ResponseEntity<TagJson> getTag(@PathVariable @NotNull UUID uuid) {
+        Optional<Tag> tagOptional = tagRepository.findByUuid(uuid);
         return tagOptional.map(value -> ResponseEntity.ok(tagConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/tag/{name}")
-    public ResponseEntity<TagJson> putTag(@PathVariable @NotNull String name, @Valid @RequestBody TagJson tagJson) {
-        Optional<Tag> tagOptional = tagRepository.findByName(name);
+    @PutMapping("/api/tag/{uuid}")
+    public ResponseEntity<TagJson> putTag(@PathVariable @NotNull UUID uuid, @Valid @RequestBody BaseTagJson baseTagJson) {
+        Optional<Tag> tagOptional = tagRepository.findByUuid(uuid);
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Tag tag = tagOptional.get();
-        tagConverter.updateEntity(tag, tagJson);
+        tagConverter.updateEntity(tag, baseTagJson);
         tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
 
-    @DeleteMapping("/api/tag/{name}")
-    public ResponseEntity<Void> deleteTag(@PathVariable @NotNull String name) {
-        Optional<Tag> tagOptional = tagRepository.findByName(name);
+    @DeleteMapping("/api/tag/{uuid}")
+    public ResponseEntity<Void> deleteTag(@PathVariable @NotNull UUID uuid) {
+        Optional<Tag> tagOptional = tagRepository.findByUuid(uuid);
         if (tagOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
