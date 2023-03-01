@@ -19,17 +19,15 @@ public class PlaceConverter {
     private PlaceRepository placeRepository;
 
     public Place convertToEntity(BasePlaceJson basePlaceJson) {
-        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return updateEntity(new Place(), basePlaceJson);
     }
 
     public PlaceJson convertToJson(Place place) {
         PlaceJson placeJson = new PlaceJson();
         placeJson.setName(place.getName());
-        placeJson.setSlug(place.getSlug());
+        placeJson.setUuid(place.getUuid());
         placeJson.setDescription(place.getDescription());
-        placeJson.setParentSlug(place.getSlug());
+        placeJson.setParentUUID(place.getParent() != null ? place.getParent().getUuid() : null);
         return placeJson;
     }
 
@@ -60,11 +58,12 @@ public class PlaceConverter {
         place.setName(basePlaceJson.getName());
 
 //      Name and parent are constraint unique
-        if (basePlaceJson.getParentSlug() != null) {
-            Optional<Place> parent = placeRepository.findBySlug(basePlaceJson.getParentSlug());
+        if (basePlaceJson.getParentUUID() != null) {
+            Optional<Place> parent = placeRepository.findByUuid(basePlaceJson.getParentUUID());
             if (parent.isEmpty()) {
                 fieldNotValidItems.add(FieldNotValidItem
-                        .entityNotFound("parentSlug", "Place", basePlaceJson.getParentSlug()));
+                        .entityNotFound("parentSlug", "Place",
+                                basePlaceJson.getParentUUID().toString()));
             } else {
                 if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), parent.get())) {
                     fieldNotValidItems.add(FieldNotValidItem
@@ -78,10 +77,6 @@ public class PlaceConverter {
                 fieldNotValidItems.add(FieldNotValidItem
                         .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
             }
-        }
-
-        if (place.getSlug() == null) {
-            place.setSlug(JsonConverter.generateSlug(place.getName()));
         }
 
         place.setDescription(basePlaceJson.getDescription());

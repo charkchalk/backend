@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "places", uniqueConstraints = {
@@ -23,8 +24,8 @@ public class Place {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "slug", nullable = false, unique = true, updatable = false)
-    private String slug;
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    private UUID uuid;
 
     @Column(name = "name", nullable = false, updatable = false)
     private String name;

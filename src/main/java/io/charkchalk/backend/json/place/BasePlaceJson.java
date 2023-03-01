@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,7 +19,6 @@ public class BasePlaceJson {
     @JsonProperty("description")
     private String description;
 
-    @NotBlank
-    @JsonProperty("parent_slug")
-    private String parentSlug;
+    @JsonProperty("parent_uuid")
+    private UUID parentUUID;
 }
