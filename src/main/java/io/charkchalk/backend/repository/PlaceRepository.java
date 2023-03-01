@@ -8,6 +8,4 @@ import java.util.UUID;
 
 public interface PlaceRepository extends PagingAndSortingRepository<Place, Long> {
     Optional<Place> findByUuid(UUID uuid);
-    boolean existsByNameAndParent(String name, Place parent);
-    boolean existsByUuid(UUID uuid);
 }
