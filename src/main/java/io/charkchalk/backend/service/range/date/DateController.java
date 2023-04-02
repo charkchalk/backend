@@ -26,7 +26,7 @@ public class DateController {
     private DateRangeRepository dateRangeRepository;
 
     @PostMapping("/api/range/date")
-    public ResponseEntity<BaseDateRangeJson> createDateRange(@Valid @RequestBody BaseDateRangeJson baseDateRangeJson) {
+    public ResponseEntity<DateRangeJson> createDateRange(@Valid @RequestBody BaseDateRangeJson baseDateRangeJson) {
         DateRange dateRange = dateRangeConverter.convertToEntity(baseDateRangeJson);
         dateRangeRepository.save(dateRange);
         return ResponseEntity.ok(dateRangeConverter.convertToJson(dateRange));
@@ -46,7 +46,7 @@ public class DateController {
     }
 
     @PutMapping("/api/range/date/{uuid}")
-    public ResponseEntity<BaseDateRangeJson> putDateRange(@PathVariable @NotNull UUID uuid,
+    public ResponseEntity<DateRangeJson> putDateRange(@PathVariable @NotNull UUID uuid,
                                                           @Valid @RequestBody BaseDateRangeJson baseDateRangeJson) {
         Optional<DateRange> dateRangeOptional = dateRangeRepository.findByUuid(uuid);
         if (dateRangeOptional.isEmpty()) {

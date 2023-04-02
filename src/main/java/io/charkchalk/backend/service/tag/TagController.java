@@ -28,7 +28,7 @@ public class TagController {
     private TagRepository tagRepository;
 
     @PostMapping("/api/tag")
-    public ResponseEntity<BaseTagJson> createTag(@Valid @RequestBody BaseTagJson baseTagJson) {
+    public ResponseEntity<TagJson> createTag(@Valid @RequestBody BaseTagJson baseTagJson) {
         Tag tag = tagConverter.convertToEntity(baseTagJson);
         tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
