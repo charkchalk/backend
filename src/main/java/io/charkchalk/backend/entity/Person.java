@@ -39,4 +39,9 @@ public class Person {
     @ManyToMany(mappedBy = "hosts")
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        setUuid(java.util.UUID.randomUUID());
+    }
 }

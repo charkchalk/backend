@@ -43,4 +43,9 @@ public class DateRange {
     @OneToMany(mappedBy = "dateRange")
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        setUuid(java.util.UUID.randomUUID());
+    }
 }
