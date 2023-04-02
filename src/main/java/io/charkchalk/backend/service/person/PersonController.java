@@ -55,7 +55,7 @@ public class PersonController {
         }
         Person person = personOptional.get();
         personConverter.updateEntity(person, basePersonJson);
-        personRepository.save(person);
+        person = personRepository.save(person);
         return ResponseEntity.ok(personConverter.convertToJson(person));
     }
 

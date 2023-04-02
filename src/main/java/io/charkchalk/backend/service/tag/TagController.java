@@ -30,7 +30,7 @@ public class TagController {
     @PostMapping("/api/tag")
     public ResponseEntity<TagJson> createTag(@Valid @RequestBody BaseTagJson baseTagJson) {
         Tag tag = tagConverter.convertToEntity(baseTagJson);
-        tagRepository.save(tag);
+        tag = tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
 
@@ -56,7 +56,7 @@ public class TagController {
         }
         Tag tag = tagOptional.get();
         tagConverter.updateEntity(tag, baseTagJson);
-        tagRepository.save(tag);
+        tag = tagRepository.save(tag);
         return ResponseEntity.ok(tagConverter.convertToJson(tag));
     }
 

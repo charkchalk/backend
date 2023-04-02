@@ -55,7 +55,7 @@ public class OrganizationController {
         }
         Organization organization = organizationOptional.get();
         organizationConverter.updateEntity(organization, json);
-        organizationRepository.save(organization);
+        organization = organizationRepository.save(organization);
         return ResponseEntity.ok(organizationConverter.convertToJson(organization));
     }
 

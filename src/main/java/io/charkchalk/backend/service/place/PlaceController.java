@@ -29,7 +29,7 @@ public class PlaceController {
     @PostMapping("/api/place")
     public ResponseEntity<PlaceJson> createPlace(@Valid @RequestBody BasePlaceJson basePlaceJson) {
         Place place = placeConverter.convertToEntity(basePlaceJson);
-        placeRepository.save(place);
+        place = placeRepository.save(place);
         return ResponseEntity.ok(placeConverter.convertToJson(place));
     }
 
@@ -55,7 +55,7 @@ public class PlaceController {
         }
         Place place = placeOptional.get();
         placeConverter.updateEntity(place, basePlaceJson);
-        placeRepository.save(place);
+        place = placeRepository.save(place);
         return ResponseEntity.ok(placeConverter.convertToJson(place));
     }
 
