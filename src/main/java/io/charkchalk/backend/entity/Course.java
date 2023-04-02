@@ -26,7 +26,7 @@ public class Course {
     private String code;
 
     @ManyToOne
-    @JoinColumn(name = "on_branch_id", nullable = false)
+    @JoinColumn(name = "on_branch_id")
     private Branch onBranch;
 
     @ManyToOne
