@@ -12,5 +12,5 @@ import java.util.UUID;
 public class PersonJson extends BasePersonJson {
     @Min(1)
     @JsonProperty("id")
-    private UUID id;
+    private UUID uuid;
 }

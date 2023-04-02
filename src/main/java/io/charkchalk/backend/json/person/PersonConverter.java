@@ -20,7 +20,7 @@ public class PersonConverter {
 
     public PersonJson convertToJson(Person person) {
         PersonJson personJson = new PersonJson();
-        personJson.setId(person.getId());
+        personJson.setUuid(person.getUuid());
         personJson.setName(person.getName());
         personJson.setDescription(person.getDescription());
         personJson.setLink(person.getLink());

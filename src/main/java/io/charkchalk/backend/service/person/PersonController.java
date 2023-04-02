@@ -39,17 +39,17 @@ public class PersonController {
         return ResponseEntity.ok(personConverter.convertToPageJson(personRepository.findAll(pageable)));
     }
 
-    @GetMapping("/api/person/{id}")
-    public ResponseEntity<PersonJson> getPerson(@PathVariable UUID id) {
-        Optional<Person> personOptional = personRepository.findById(id);
+    @GetMapping("/api/person/{uuid}")
+    public ResponseEntity<PersonJson> getPerson(@PathVariable UUID uuid) {
+        Optional<Person> personOptional = personRepository.findByUuid(uuid);
         return personOptional.map(value -> ResponseEntity.ok(personConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/person/{id}")
-    public ResponseEntity<PersonJson> putPerson(@PathVariable UUID id,
+    @PutMapping("/api/person/{uuid}")
+    public ResponseEntity<PersonJson> putPerson(@PathVariable UUID uuid,
                                                 @Valid @RequestBody BasePersonJson basePersonJson) {
-        Optional<Person> personOptional = personRepository.findById(id);
+        Optional<Person> personOptional = personRepository.findByUuid(uuid);
         if (personOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -59,9 +59,9 @@ public class PersonController {
         return ResponseEntity.ok(personConverter.convertToJson(person));
     }
 
-    @DeleteMapping("/api/person/{id}")
-    public ResponseEntity<Void> deletePerson(@PathVariable UUID id) {
-        Optional<Person> personOptional = personRepository.findById(id);
+    @DeleteMapping("/api/person/{uuid}")
+    public ResponseEntity<Void> deletePerson(@PathVariable UUID uuid) {
+        Optional<Person> personOptional = personRepository.findByUuid(uuid);
         if (personOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
