@@ -24,6 +24,7 @@ public class Place {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private UUID uuid;
 
