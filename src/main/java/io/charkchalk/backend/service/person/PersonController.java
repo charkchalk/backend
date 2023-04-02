@@ -27,7 +27,7 @@ public class PersonController {
     private PersonRepository personRepository;
 
     @PostMapping("/api/person")
-    public ResponseEntity<PersonJson> createPlace(@Valid @RequestBody BasePersonJson basePersonJson) {
+    public ResponseEntity<PersonJson> createPerson(@Valid @RequestBody BasePersonJson basePersonJson) {
         Person person = personConverter.convertToEntity(basePersonJson);
         person = personRepository.save(person);
         return ResponseEntity.ok(personConverter.convertToJson(person));

@@ -24,7 +24,6 @@ public class Organization {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private UUID uuid;
 
@@ -52,4 +51,9 @@ public class Organization {
     @OneToMany(mappedBy = "organization", orphanRemoval = true)
     @ToString.Exclude
     private Collection<Course> courses = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        setUuid(java.util.UUID.randomUUID());
+    }
 }

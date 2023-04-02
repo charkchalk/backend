@@ -76,15 +76,17 @@ public class OrganizationConverter {
         }
 
         Collection<Tag> tags = new HashSet<>();
-        for (String tagName : baseOrganizationJson.getTags()) {
-            Optional<Tag> tag = tagRepository.findByName(tagName);
-            if (tag.isEmpty()) {
-                fieldNotValidItems.add(FieldNotValidItem.entityNotFound("tags", "Tag", tagName));
-            } else {
-                tags.add(tag.get());
+        if (baseOrganizationJson.getTags() != null) {
+            for (String tagName : baseOrganizationJson.getTags()) {
+                Optional<Tag> tag = tagRepository.findByName(tagName);
+                if (tag.isEmpty()) {
+                    fieldNotValidItems.add(FieldNotValidItem.entityNotFound("tags", "Tag", tagName));
+                } else {
+                    tags.add(tag.get());
+                }
             }
+            organization.setTags(tags);
         }
-        organization.setTags(tags);
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return organization;

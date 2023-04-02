@@ -61,15 +61,17 @@ public class TagConverter {
 
         tag.setDescription(baseTagJson.getDescription());
 
-        if (!tag.getName().equals(baseTagJson.getName()) || !tag.getTagLimit().equals(baseTagJson.getTagLimit())) {
-            if (tagRepository.existsByNameAndTagLimit(baseTagJson.getName(), baseTagJson.getTagLimit())) {
-                fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name/tagLimit", "Tag",
-                        baseTagJson.getName() + "/" + baseTagJson.getTagLimit()));
+        if (tag.getId() != null) {
+            if (!tag.getName().equals(baseTagJson.getName()) || !tag.getTagLimit().equals(baseTagJson.getTagLimit())) {
+                if (tagRepository.existsByNameAndTagLimit(baseTagJson.getName(), baseTagJson.getTagLimit())) {
+                    fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name/tagLimit", "Tag",
+                            baseTagJson.getName() + "/" + baseTagJson.getTagLimit()));
+                }
             }
-
-            tag.setName(baseTagJson.getName());
-            tag.setTagLimit(baseTagJson.getTagLimit());
         }
+
+        tag.setName(baseTagJson.getName());
+        tag.setTagLimit(baseTagJson.getTagLimit());
 
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return tag;

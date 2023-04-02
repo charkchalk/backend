@@ -59,15 +59,16 @@ public class DateRangeConverter {
     public DateRange updateEntity(DateRange dateRange, BaseDateRangeJson baseDateRangeJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-        if (!dateRange.getName().equals(baseDateRangeJson.getName())) {
-            if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
+        if (dateRange.getId() != null) {
+            if (!dateRange.getName().equals(baseDateRangeJson.getName())) {
+                if (dateRangeRepository.existsByName(baseDateRangeJson.getName())) {
+                    fieldNotValidItems.add(FieldNotValidItem
+                            .entityAlreadyExists("name", "DateRange", baseDateRangeJson.getName()));
+                }
             }
-
-            dateRange.setName(baseDateRangeJson.getName());
         }
 
+        dateRange.setName(baseDateRangeJson.getName());
         dateRange.setStartDate(baseDateRangeJson.getStartDate());
         dateRange.setEndDate(baseDateRangeJson.getEndDate());
 

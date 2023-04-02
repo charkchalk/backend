@@ -25,7 +25,6 @@ public class Tag {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private UUID uuid;
 
@@ -46,4 +45,9 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     @ToString.Exclude
     private Collection<Organization> organizations = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        setUuid(java.util.UUID.randomUUID());
+    }
 }

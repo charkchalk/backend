@@ -5,9 +5,7 @@ import io.charkchalk.backend.entity.range.TimeRange;
 import lombok.*;
 import javax.persistence.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "courses")
@@ -21,7 +19,6 @@ public class Course {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private UUID uuid;
 
@@ -39,12 +36,12 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
-    private Organization organization;
-
     @Column(name = "description")
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "organization_id", nullable = false)
+    private Organization organization;
 
     @Column(name = "link")
     private URL link;
@@ -56,35 +53,40 @@ public class Course {
     @JoinColumn(name = "date_id")
     private DateRange dateRange;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "courses_tags",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "tags_id"))
     @ToString.Exclude
-    private Collection<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "courses_places",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "places_id"))
     @ToString.Exclude
-    private Collection<Place> places = new ArrayList<>();
+    private Set<Place> places = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "courses_time_ranges",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "time_ranges_id"))
     @ToString.Exclude
-    private Collection<TimeRange> timeRanges = new ArrayList<>();
+    private Set<TimeRange> timeRanges = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "courses_persons",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
     @ToString.Exclude
-    private Collection<Person> hosts = new ArrayList<>();
+    private Set<Person> hosts = new HashSet<>();
 
     @OneToMany(mappedBy = "predecessor")
     @ToString.Exclude
-    private Collection<Course> child = new ArrayList<>();
+    private Set<Course> child = new HashSet<>();
+
+    @PrePersist
+    protected void onCreate() {
+        setUuid(java.util.UUID.randomUUID());
+    }
 }
