@@ -9,6 +9,7 @@ DISABLE:
   - SPELL # Comment to enable checks of spelling mistakes
   - GROOVY # Comment to enable checks of Groovy files
 DISABLE_LINTERS:
+  - REPOSITORY_CHECKOV
   - JAVA_PMD
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: true

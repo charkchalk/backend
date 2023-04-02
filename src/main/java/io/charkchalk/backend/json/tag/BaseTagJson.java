@@ -1,15 +1,16 @@
-package io.charkchalk.backend.json.place;
+package io.charkchalk.backend.json.tag;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.charkchalk.backend.entity.enums.TagLimit;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class BasePlaceJson {
+public class BaseTagJson {
 
     @NotBlank
     @JsonProperty("name")
@@ -19,6 +20,7 @@ public class BasePlaceJson {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("parent_uuid")
-    private UUID parentUUID;
+    @NotNull
+    @JsonProperty("limit")
+    private TagLimit tagLimit;
 }

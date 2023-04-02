@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @RestController
@@ -28,7 +29,7 @@ public class PlaceController {
     @PostMapping("/api/place")
     public ResponseEntity<PlaceJson> createPlace(@Valid @RequestBody BasePlaceJson basePlaceJson) {
         Place place = placeConverter.convertToEntity(basePlaceJson);
-        placeRepository.save(place);
+        place = placeRepository.save(place);
         return ResponseEntity.ok(placeConverter.convertToJson(place));
     }
 
@@ -38,29 +39,29 @@ public class PlaceController {
         return ResponseEntity.ok(placeConverter.convertToPageJson(placeRepository.findAll(pageable)));
     }
 
-    @GetMapping("/api/place/{slug}")
-    public ResponseEntity<PlaceJson> getPlace(@PathVariable String slug) {
-        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
+    @GetMapping("/api/place/{uuid}")
+    public ResponseEntity<PlaceJson> getPlace(@PathVariable UUID uuid) {
+        Optional<Place> placeOptional = placeRepository.findByUuid(uuid);
         return placeOptional.map(value -> ResponseEntity.ok(placeConverter.convertToJson(value)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/api/place/{slug}")
-    public ResponseEntity<PlaceJson> putPlace(@PathVariable String slug,
+    @PutMapping("/api/place/{uuid}")
+    public ResponseEntity<PlaceJson> putPlace(@PathVariable UUID uuid,
                                               @Valid @RequestBody BasePlaceJson basePlaceJson) {
-        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
+        Optional<Place> placeOptional = placeRepository.findByUuid(uuid);
         if (placeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Place place = placeOptional.get();
         placeConverter.updateEntity(place, basePlaceJson);
-        placeRepository.save(place);
+        place = placeRepository.save(place);
         return ResponseEntity.ok(placeConverter.convertToJson(place));
     }
 
-    @DeleteMapping("/api/place/{slug}")
-    public ResponseEntity<Void> deletePlace(@PathVariable String slug) {
-        Optional<Place> placeOptional = placeRepository.findBySlug(slug);
+    @DeleteMapping("/api/place/{uuid}")
+    public ResponseEntity<Void> deletePlace(@PathVariable UUID uuid) {
+        Optional<Place> placeOptional = placeRepository.findByUuid(uuid);
         if (placeOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

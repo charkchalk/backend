@@ -32,7 +32,7 @@ public class OrganizationConverter {
         organizationJson.setName(organization.getName());
         organizationJson.setUuid(organization.getUuid());
         organizationJson.setDescription(organization.getDescription());
-        organizationJson.setParentUuid(organization.getParent().getUuid());
+        organizationJson.setParentUuid(organization.getParent() != null ? organization.getParent().getUuid() : null);
 
         Collection<String> tags = new HashSet<>();
 
@@ -61,26 +61,17 @@ public class OrganizationConverter {
     public Organization updateEntity(Organization organization, BaseOrganizationJson baseOrganizationJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
+//      Todo: pre-check if name, parentUUID is unique
+        organization.setName(baseOrganizationJson.getName());
         organization.setDescription(baseOrganizationJson.getDescription());
 
-//      Check field organization's name or parent member is changed in baseOrganizationJson
-        if (!organization.getName().equals(baseOrganizationJson.getName()) ||
-                !organization.getParent().getUuid().equals(baseOrganizationJson.getParentUuid())) {
-            Optional<Organization> newParent = organizationRepository.findByUuid(baseOrganizationJson.getParentUuid());
-
-            if (newParent.isEmpty()) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityNotFound("parentUuid", "Organization",
-                                baseOrganizationJson.getParentUuid().toString()));
+        if (baseOrganizationJson.getParentUuid() != null) {
+            Optional<Organization> parent = organizationRepository.findByUuid(baseOrganizationJson.getParentUuid());
+            if (parent.isPresent()) {
+                organization.setParent(parent.get());
             } else {
-//              Check if organization's name and parent are unique
-                if (organizationRepository.existsByNameAndParent(baseOrganizationJson.getName(), newParent.get())) {
-                    fieldNotValidItems.add(FieldNotValidItem.entityAlreadyExists("name/parent", "Organization",
-                            baseOrganizationJson.getName() + "/" + baseOrganizationJson.getParentUuid().toString()));
-                }
-
-                organization.setName(baseOrganizationJson.getName());
-                organization.setParent(newParent.get());
+                fieldNotValidItems.add(FieldNotValidItem.entityNotFound("parent", "Organization",
+                        baseOrganizationJson.getParentUuid().toString()));
             }
         }
 

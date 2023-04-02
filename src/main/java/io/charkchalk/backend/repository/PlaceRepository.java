@@ -4,9 +4,8 @@ import io.charkchalk.backend.entity.Place;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface PlaceRepository extends PagingAndSortingRepository<Place, Long> {
-    Optional<Place> findBySlug(String slug);
-    boolean existsByNameAndParent(String name, Place parent);
-    boolean existsBySlug(String slug);
+    Optional<Place> findByUuid(UUID uuid);
 }

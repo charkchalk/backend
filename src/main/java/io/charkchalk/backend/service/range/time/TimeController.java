@@ -29,7 +29,7 @@ public class TimeController {
     @PostMapping("/api/range/time")
     public ResponseEntity<TimeRangeJson> createTimeRange(@Valid @RequestBody BaseTimeRangeJson baseTimeRangeJson) {
         TimeRange timeRange = timeRangeConverter.convertToEntity(baseTimeRangeJson);
-        timeRangeRepository.save(timeRange);
+        timeRange = timeRangeRepository.save(timeRange);
         return ResponseEntity.ok(timeRangeConverter.convertToJson(timeRange));
     }
 

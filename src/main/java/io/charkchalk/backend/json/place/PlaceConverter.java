@@ -19,17 +19,15 @@ public class PlaceConverter {
     private PlaceRepository placeRepository;
 
     public Place convertToEntity(BasePlaceJson basePlaceJson) {
-        List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
-        JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return updateEntity(new Place(), basePlaceJson);
     }
 
     public PlaceJson convertToJson(Place place) {
         PlaceJson placeJson = new PlaceJson();
         placeJson.setName(place.getName());
-        placeJson.setSlug(place.getSlug());
+        placeJson.setUuid(place.getUuid());
         placeJson.setDescription(place.getDescription());
-        placeJson.setParentSlug(place.getSlug());
+        placeJson.setParentUUID(place.getParent() != null ? place.getParent().getUuid() : null);
         return placeJson;
     }
 
@@ -49,42 +47,22 @@ public class PlaceConverter {
     public Place updateEntity(Place place, BasePlaceJson basePlaceJson) {
         List<FieldNotValidItem> fieldNotValidItems = new ArrayList<>();
 
-//      Name is not updatable
-        if (place.getName() != null && !place.getName().equals(basePlaceJson.getName())) {
-            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), place.getParent())) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityFieldNotUpdatable("name", "Place"));
-            }
-        }
-
+//      Todo: pre-check if name, parentUUID is unique
         place.setName(basePlaceJson.getName());
+        place.setDescription(basePlaceJson.getDescription());
 
-//      Name and parent are constraint unique
-        if (basePlaceJson.getParentSlug() != null) {
-            Optional<Place> parent = placeRepository.findBySlug(basePlaceJson.getParentSlug());
-            if (parent.isEmpty()) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityNotFound("parentSlug", "Place", basePlaceJson.getParentSlug()));
+        if (basePlaceJson.getParentUUID() != null) {
+            Optional<Place> parent = placeRepository.findByUuid(basePlaceJson.getParentUUID());
+            if (parent.isPresent()) {
+                place.setParent(parent.get());
             } else {
-                if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), parent.get())) {
-                    fieldNotValidItems.add(FieldNotValidItem
-                            .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
-                } else {
-                    place.setParent(parent.get());
-                }
+                fieldNotValidItems.add(FieldNotValidItem.entityNotFound("parent", "Place",
+                        basePlaceJson.getParentUUID().toString()));
             }
         } else {
-            if (placeRepository.existsByNameAndParent(basePlaceJson.getName(), null)) {
-                fieldNotValidItems.add(FieldNotValidItem
-                        .entityAlreadyExists("name", "Place", basePlaceJson.getName()));
-            }
+            place.setParent(null);
         }
 
-        if (place.getSlug() == null) {
-            place.setSlug(JsonConverter.generateSlug(place.getName()));
-        }
-
-        place.setDescription(basePlaceJson.getDescription());
         JsonConverter.checkFieldNotValidException(fieldNotValidItems);
         return place;
     }
