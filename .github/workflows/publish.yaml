@@ -31,12 +31,6 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_DEPLOY_KEY }}
 
-      - name: Strip tags name
-        id: strip
-        if: ${{ contains(github.ref, 'refs/tags/') }}
-        # Strip prefix 'refs/tags' and suffix '#{worker_name}' then set into output
-        run: STRIP=${GITHUB_REF#refs/tags/}; echo "::set-output name=tags_name::${STRIP%#*}"
-
       - name: Build & Push Docker Images with latest tag
         uses: docker/build-push-action@v4
         if: ${{ contains(github.ref, 'refs/tags/') }}
@@ -48,4 +42,4 @@ jobs:
           push: true
           tags: |
             docker.io/charkchalk/backend:latest
-            docker.io/charkchalk/backend:${{ steps.strip.outputs.tags_name }}
+            docker.io/charkchalk/backend:${{ github.ref_name }}
