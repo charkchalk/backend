@@ -11,4 +11,7 @@ USER app
 
 COPY --from=build /home/gradle/src/build/libs/*.jar /app.jar
 EXPOSE 8080
+
+HEALTHCHECK CMD curl --fail http://localhost:8080 || exit 1
+
 ENTRYPOINT ["java","-jar","/app.jar"]
