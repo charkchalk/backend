@@ -60,7 +60,8 @@ public class BasicSearchController {
     }
 
     @GetMapping("/api/search/basic/organization/{name}")
-    public ResponseEntity<PageJson<OrganizationJson>> getOrganization(@PathVariable @NotNull String name, Pageable pageable) {
+    public ResponseEntity<PageJson<OrganizationJson>> getOrganization(@PathVariable @NotNull String name,
+                                                                      Pageable pageable) {
         TagConverter.checkPageable(pageable);
         Page<Organization> organizationPage = organizationSearchRepository.searchKeyword(name, pageable);
         return ResponseEntity.ok(organizationConverter.convertToPageJson(organizationPage));
